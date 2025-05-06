@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ignora las properties para proteger contraseñas##
+.properties
