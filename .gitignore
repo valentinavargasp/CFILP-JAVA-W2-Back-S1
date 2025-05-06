@@ -33,4 +33,8 @@ build/
 .vscode/
 
 ### ignora las properties para proteger contraseñas##
+<<<<<<< HEAD
 */application.properties
+=======
+*/application.properties
+>>>>>>> ff8d6bab5a31e9ce113eb4c2eb07dc5d5e0eb2d0
