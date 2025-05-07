@@ -40,7 +40,7 @@ public class UserRole {
 
     @Override
     public String toString(){
-        return "UserRole [id =" + id + ", id_user = " + idUser + ", idRole = " + idRole + "]";
+        return "UserRole [id =" + id + ", idUser = " + idUser + ", idRole = " + idRole + "]";
     }
     
 }
