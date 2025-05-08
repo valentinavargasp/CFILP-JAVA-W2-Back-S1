@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,23 +26,25 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "id_person")
-    private int idPerson;
+    // Relaciones
+    @OneToOne
+    @JoinColumn(name = "id_person", referencedColumnName = "id")
+    private Person person; // Foreign key de la tabla user a la tabla person.
 
     // Constructores
     public User() {
     }
 
-    public User(int id, String email, String password, int idPerson) {
+    public User(int id, String email, String password, Person person) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.idPerson = idPerson;
+        this.person = person;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + ", idPerson=" + idPerson + "]";
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", person=" + person + "]";
     }
 
 }
