@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +20,8 @@ import lombok.Setter;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_account")
     private int id;
-
-    @Column(name = "id_user")
-    private int idUser;
 
     @Column(name = "cbu")
     private String cbu;
@@ -32,31 +32,36 @@ public class Account {
     @Column(name = "alias")
     private String alias;
 
-    @Column(name = "account_type_id")
-    private int accountTypeId;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     private Currency currency;
+
+    // Relaciones
+    @ManyToOne // Un usuario puede tener muchas cuentas
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    private User user;
+
+    @ManyToOne //Un tipo de cuenta puede tener muchas cuentas
+    @JoinColumn(name = "account_type_id", referencedColumnName = "id_account_type")
+    private AccountType accountType;
 
     // Constructores
     public Account() {
     }
 
-    public Account(int id, int idUser, String cbu, double balance, String alias, int accountTypeId, Currency currency) {
-        this.id = id;
-        this.idUser = idUser;
+    public Account(User user, String cbu, double balance, String alias, AccountType accountType, Currency currency) {
+        this.user = user;
         this.cbu = cbu;
         this.balance = balance;
         this.alias = alias;
-        this.accountTypeId = accountTypeId;
+        this.accountType = accountType;
         this.currency = currency;
     }
 
     @Override
     public String toString() {
-        return "Account [id=" + id + ", idUser=" + idUser + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
-                + ", accountTypeId=" + accountTypeId + ", currency=" + currency + "]";
+        return "Account [id=" + id + ", user=" + user + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
+                + ", accountType=" + accountType.getAccountType() + ", currency=" + currency + "]";
     }
 
 }
