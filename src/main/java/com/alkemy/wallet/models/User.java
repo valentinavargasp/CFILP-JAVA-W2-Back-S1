@@ -16,8 +16,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "user")
 public class User {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user") // este es el nombre real en la tabla
     private int id;
 
     @Column(name = "email")
@@ -26,12 +28,11 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    // Relaciones
     @OneToOne
-    @JoinColumn(name = "id_person", referencedColumnName = "id")
-    private Person person; // Foreign key de la tabla user a la tabla person.
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person")
+    private Person person;
 
-    // Constructores
+    // Constructor
     public User() {
     }
 
@@ -46,5 +47,4 @@ public class User {
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", password=" + password + ", person=" + person + "]";
     }
-
 }
