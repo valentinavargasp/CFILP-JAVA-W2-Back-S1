@@ -1,10 +1,13 @@
 package com.alkemy.wallet.models;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,19 +19,25 @@ import lombok.Setter;
 public class AccountType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_account_type")
     private int id;
 
     @Column(name = "account_type")
     private String accountType;
 
-    //contructores
-    public AccountType(){
+    // Relaciones
+    // Relación con Account
+    @OneToMany(mappedBy = "accountType")
+    private List<Account> accounts;
+
+    // contructores
+    public AccountType() {
 
     }
 
-    public AccountType(int id, String type){
+    public AccountType(int id, String accountType) {
         this.id = id;
-        this.accountType = type; 
+        this.accountType = accountType;
     }
 
     @Override
@@ -38,5 +47,5 @@ public class AccountType {
                 ", accountType=" + accountType +
                 " }";
     }
-    
+
 }

@@ -1,5 +1,8 @@
 package com.alkemy.wallet.models;
 
+
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +22,7 @@ public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user") // este es el nombre real en la tabla
+    @Column(name = "id_user") 
     private int id;
 
     @Column(name = "email")
@@ -28,16 +31,25 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    // Relación uno a uno con la entidad Person
     @OneToOne
     @JoinColumn(name = "id_person", referencedColumnName = "id_person")
     private Person person;
+
+    /*Relación con Account. Para ver las cuentas de un usuario
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
+
+    // Relación con UserRole. Para ver los roles de un usuario
+    @OneToMany(mappedBy = "user")
+    private List<UserRole> userRoles;*/
+
 
     // Constructor
     public User() {
     }
 
-    public User(int id, String email, String password, Person person) {
-        this.id = id;
+    public User(String email, String password, Person person) {
         this.email = email;
         this.password = password;
         this.person = person;
