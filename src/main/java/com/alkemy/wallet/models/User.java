@@ -3,12 +3,17 @@ package com.alkemy.wallet.models;
 
 
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -36,13 +41,15 @@ public class User {
     @JoinColumn(name = "id_person", referencedColumnName = "id_person")
     private Person person;
 
-    /*Relación con Account. Para ver las cuentas de un usuario
+    //Relación con Account. Para ver las cuentas de un usuario
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Account> accounts;
 
     // Relación con UserRole. Para ver los roles de un usuario
     @OneToMany(mappedBy = "user")
-    private List<UserRole> userRoles;*/
+    @JsonIgnore
+    private List<UserRole> userRoles;
 
 
     // Constructor
@@ -57,6 +64,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + ", person=" + person + "]";
+        return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
     }
+    
 }

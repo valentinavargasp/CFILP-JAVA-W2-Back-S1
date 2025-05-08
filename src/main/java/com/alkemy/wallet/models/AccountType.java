@@ -2,6 +2,8 @@ package com.alkemy.wallet.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class AccountType {
     // Relaciones
     // Relación con Account
     @OneToMany(mappedBy = "accountType")
+    @JsonBackReference
     private List<Account> accounts;
 
     // contructores

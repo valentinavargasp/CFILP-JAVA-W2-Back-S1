@@ -1,5 +1,7 @@
 package com.alkemy.wallet.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,9 +41,10 @@ public class Account {
     // Relaciones
     @ManyToOne // Un usuario puede tener muchas cuentas
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    @JsonBackReference // Evita la recursividad infinita al serializar
     private User user;
 
-    @ManyToOne //Un tipo de cuenta puede tener muchas cuentas
+    @ManyToOne // Un tipo de cuenta puede tener muchas cuentas
     @JoinColumn(name = "account_type_id", referencedColumnName = "id_account_type")
     private AccountType accountType;
 
@@ -60,7 +63,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account [id=" + id + ", user=" + user + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
+        return "Account [id=" + id + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
                 + ", accountType=" + accountType.getAccountType() + ", currency=" + currency + "]";
     }
 

@@ -1,5 +1,7 @@
 package com.alkemy.wallet.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ public class UserRole {
     //Relación con User
     @ManyToOne //Un usuario puede tener muchos roles
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    @JsonBackReference
     private User user;
 
     //Relación con Role
