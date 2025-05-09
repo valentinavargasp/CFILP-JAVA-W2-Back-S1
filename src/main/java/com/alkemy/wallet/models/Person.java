@@ -16,7 +16,8 @@ import lombok.Setter;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id_person")
+    private int idPerson;
 
     @Column(name = "name")
     private String name;
@@ -48,7 +49,7 @@ public class Person {
 
     public Person(int id, String name, String lastName, String address, String location, String province,
             String phoneNumber, int identityCard, String dateBirth) {
-        this.id = id;
+        this.idPerson = id;
         this.name = name;
         this.lastName = lastName;
         this.address = address;
@@ -62,7 +63,7 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + idPerson +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +

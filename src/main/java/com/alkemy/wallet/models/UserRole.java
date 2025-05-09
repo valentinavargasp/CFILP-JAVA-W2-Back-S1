@@ -1,10 +1,14 @@
 package com.alkemy.wallet.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,31 +20,35 @@ import lombok.Setter;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user_role")
     private int id;
 
-    @Column(name = "id_user")
-    private int idUser; 
-    
-    @Column(name = "id_role")
-    private int idRole;
+    //Relaciones
+    //Relación con User
+    @ManyToOne //Un usuario puede tener muchos roles
+    @JoinColumn(name = "id_user", referencedColumnName = "id_user")
+    @JsonBackReference
+    private User user;
+
+    //Relación con Role
+    @ManyToOne //Un rol puede tener muchos usuarios
+    @JoinColumn(name = "id_role", referencedColumnName = "id_role")
+    private Role role;
 
     //Constructores
-
     public UserRole(){
 
     }
 
-    public UserRole( int id, int user, int rol){
-
-        this.id= id;
-        this.idUser = user; 
-        this.idRole = rol;
+    public UserRole(User user, Role role){
+        this.user = user; 
+        this.role = role;
 
     }
 
     @Override
     public String toString(){
-        return "UserRole [id =" + id + ", idUser = " + idUser + ", idRole = " + idRole + "]";
+        return "UserRole [id =" + id + ", user = " + user.getId() + ", role = " + role.getId() + "]";
     }
     
 }
