@@ -69,6 +69,9 @@ public class UserController {
         }
     }
 */
+
+    // DELETE de un usuario por ID
+    // http://localhost:8080/api/user/1 con metodo delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {
