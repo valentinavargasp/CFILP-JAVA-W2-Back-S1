@@ -19,9 +19,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+/*
+    Esto da error
+
+
+
     @Override
     public User editUserById(int id, User newUserData) {
-        return userRepository.findById(id).map(user -> {
+
+
+            userRepository.findById(id).map(user -> {
+
             user.setEmail(newUserData.getEmail());
             user.setPassword(newUserData.getPassword());
             user.setPerson(newUserData.getPerson());
@@ -30,8 +38,9 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
-    }
-
+        return null;
+    };
+*/
     @Override
     public void deleteUserById(int id) {
         if (!userRepository.existsById(id)) {
