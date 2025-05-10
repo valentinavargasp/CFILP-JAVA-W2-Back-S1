@@ -3,6 +3,9 @@ package com.alkemy.wallet.services.impl;
 import java.util.List;
 
 import com.alkemy.wallet.services.UserService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,21 +36,21 @@ public class UserServiceImpl implements UserService {
             user.setUserRoles(newUserData.getUserRoles());
 
             return userRepository.save(user);
-        }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
+        }).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id " + id));
 
     };
 
     @Override
     public void deleteUserById(int id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("No se puede eliminar. Usuario no encontrado con id " + id);
+            throw new EntityNotFoundException("No se puede eliminar. Usuario no encontrado con id " + id);
         }
         userRepository.deleteById(id);
     }
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
     }
 
     @Override
