@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alkemy.wallet.models.User;
-import com.alkemy.wallet.services.UserService;
+import com.alkemy.wallet.services.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl IUserService;
 
     // GET de todos los usuarios
     // http://localhost:8080/api/user
     @GetMapping("/user")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
-            List<User> users = userService.getAllUsers();
+            List<User> users = IUserService.getAllUsers();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         try {
-            User user = userService.getUserById(id);
+            User user = IUserService.getUserById(id);
             if (user != null) {
                 return ResponseEntity.ok(user);
             } else {
@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         try {
-            User savedUser = userService.saveUser(user);
+            User savedUser = IUserService.saveUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

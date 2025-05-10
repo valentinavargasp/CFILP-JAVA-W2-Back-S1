@@ -46,9 +46,13 @@ public class UserRole {
 
     }
 
+    /*reemplace user.getID() por user  y  role.getId() por role,  el valor se obtiene al instanciar el objeto creo, esto me tira error en intelliJ"
+
+     Sebas
+     */
     @Override
     public String toString(){
-        return "UserRole [id =" + id + ", user = " + user.getId() + ", role = " + role.getId() + "]";
+        return "UserRole [id =" + id + ", user = " + user + ", role = " + role + "]";
     }
     
 }
