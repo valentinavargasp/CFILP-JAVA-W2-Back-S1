@@ -1,0 +1,1 @@
+Aca en exceptions deberiamos poner  el manejo de errores global para sacarlo del controller y  service.
