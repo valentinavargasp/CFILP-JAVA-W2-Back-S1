@@ -58,7 +58,7 @@ public class UserController {
         }
     }
 
-/*error
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userData) {
         try {
@@ -68,7 +68,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-*/
+
 
     // DELETE de un usuario por ID
     // http://localhost:8080/api/user/1 con metodo delete
