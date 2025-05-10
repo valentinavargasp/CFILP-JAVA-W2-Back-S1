@@ -4,9 +4,10 @@ import com.alkemy.wallet.models.Role;
 import com.alkemy.wallet.repository.RoleRepository;
 import com.alkemy.wallet.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
-
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
