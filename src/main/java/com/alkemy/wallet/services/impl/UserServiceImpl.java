@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.alkemy.wallet.models.User;
 import com.alkemy.wallet.repository.UserRepository;
 
-/*todo: creo que podemos implementar la logica de userrole aca agregando el repositorio correspondiente*/
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -18,6 +17,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+/*
+    Esto da error
+
+
+
+    @Override
+    public User editUserById(int id, User newUserData) {
+
+
+            userRepository.findById(id).map(user -> {
+
+            user.setEmail(newUserData.getEmail());
+            user.setPassword(newUserData.getPassword());
+            user.setPerson(newUserData.getPerson());
+            user.setAccounts(newUserData.getAccounts());
+            user.setUserRoles(newUserData.getUserRoles());
+
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
+        return null;
+    };
+*/
+    @Override
+    public void deleteUserById(int id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("No se puede eliminar. Usuario no encontrado con id " + id);
+        }
+        userRepository.deleteById(id);
     }
 
     @Override
