@@ -7,9 +7,10 @@ import com.alkemy.wallet.repository.UserRepository;
 import com.alkemy.wallet.repository.UserRoleRepository;
 import com.alkemy.wallet.services.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
