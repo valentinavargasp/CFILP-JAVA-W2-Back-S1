@@ -20,7 +20,7 @@ import lombok.Setter;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user_role")
+    @Column(name="id_user_role")
     private int id;
 
     //Relaciones

@@ -27,7 +27,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user") 
+    @Column(name="id_user")
     private int id;
 
     @Column(name = "email")
@@ -50,7 +50,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<UserRole> userRoles;
-
+    private Person person2; // Foreign key de la tabla user a la tabla person.
 
     // Constructor
     public User() {
