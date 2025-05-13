@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.alkemy.wallet.services.AccountService;
-import com.alkemy.wallet.models.Account;
+import com.alkemy.wallet.models.account.Account;
 
 
 
