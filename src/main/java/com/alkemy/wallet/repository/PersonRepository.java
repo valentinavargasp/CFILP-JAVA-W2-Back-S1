@@ -2,9 +2,8 @@ package com.alkemy.wallet.repository;
 
 import com.alkemy.wallet.models.Person;
 
+
 import java.util.List;
-
-
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
