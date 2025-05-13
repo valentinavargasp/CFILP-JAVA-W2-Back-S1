@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PersonService {
 
+
     public Person savePerson(Person person);  //guarda
     public Person editPerson(int id, Person person);  //edita
     public void deletePersonById(int id);  //elimina
@@ -17,4 +18,5 @@ public interface PersonService {
     public Person findPersonByAddress(String address);
     public Person findPersonByIdentityCard(int identityCard);
     public Person findPersonByDateBirth(String dateBirth);
+
 }

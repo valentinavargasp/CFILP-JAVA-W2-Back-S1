@@ -1,28 +1,35 @@
 package com.alkemy.wallet.services.impl;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alkemy.wallet.models.Account;
 import com.alkemy.wallet.models.Person;
 import com.alkemy.wallet.models.User;
+
 import com.alkemy.wallet.repository.PersonRepository;
 import com.alkemy.wallet.services.PersonService;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 
 @Service
 public class PersonServiceImpl implements com.alkemy.wallet.services.PersonService {
+
+
     @Autowired
     private PersonRepository personRepository;
 
     @Override
-    public Person savePerson(Person person) {
-        return personRepository.save(person);
+    public void savePerson(Person person) {
+        // Check if the person already exists
+        if (personRepository.findByIdentityCard(person.getIdentityCard()).isPresent()) {
+            throw new IllegalArgumentException("Esta persona ya existe");
+        }
+        personRepository.save(person);
     }
 
+    @Override
     public Person editPerson(int id, Person newPersonData) {
         return personRepository.findById(id).map(person -> {
             if (newPersonData.getName() != null) {
@@ -48,6 +55,7 @@ public class PersonServiceImpl implements com.alkemy.wallet.services.PersonServi
     }
 
     //eliminar persona
+    @Override
     public void  deletePersonById(int id) {
         if (!personRepository.existsById(id)) {
             throw new RuntimeException("No se puede eliminar. Cuenta no encontrada con id " + id);
@@ -55,40 +63,47 @@ public class PersonServiceImpl implements com.alkemy.wallet.services.PersonServi
         personRepository.deleteById(id);
     }
     //buscadores
+    @Override  
     public Person findPersonById(int id) {
         return personRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con id " + id));
     }
-
+    @Override
     public Person findPersonByName(String name) {
         return personRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con nombre " + name));
     }
+    @Override
     public Person findPersonByLastName(String lastName) {
         return personRepository.findByLastName(lastName)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con apellido: " + lastName));
     }
-
+    @Override
     public Person findPersonByPhoneNumber(String phoneNumber) {
         return personRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con teléfono: " + phoneNumber));
     }
+    @Override  
     public List<Person> findPersonsByLocation(String location) {
     return personRepository.findByLocationIgnoreCase(location);
     }
+    @Override
     public Person findPersonByAddress(String address) {
         return personRepository.findByAddress(address)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con dirección: " + address));
     }
-
+    @Override
     public Person findPersonByIdentityCard(int identityCard) {
         return personRepository.findByIdentityCard(identityCard)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con número de identificación: " + identityCard));
     }
-
+    @Override 
     public Person findPersonByDateBirth(String dateBirth) {
         return personRepository.findByDateBirth(dateBirth)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con fecha de nacimiento: " + dateBirth));
+
+
+
     }
 
 }

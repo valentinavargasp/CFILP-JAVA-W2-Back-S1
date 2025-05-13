@@ -1,7 +1,14 @@
 package com.alkemy.wallet.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-//TODO: entity debit card
+@Entity
 public class DebitCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
 }
