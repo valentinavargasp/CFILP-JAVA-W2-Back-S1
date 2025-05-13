@@ -3,14 +3,14 @@ package com.alkemy.wallet.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alkemy.wallet.models.Account;
 import com.alkemy.wallet.models.Person;
-import com.alkemy.wallet.models.User;
 
 import com.alkemy.wallet.repository.PersonRepository;
-import com.alkemy.wallet.services.PersonService;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -21,12 +21,13 @@ public class PersonServiceImpl implements com.alkemy.wallet.services.PersonServi
     private PersonRepository personRepository;
 
     @Override
-    public void savePerson(Person person) {
+    public Person savePerson(Person person) {
         // Check if the person already exists
         if (personRepository.findByIdentityCard(person.getIdentityCard()).isPresent()) {
             throw new IllegalArgumentException("Esta persona ya existe");
         }
         personRepository.save(person);
+        return person;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class PersonServiceImpl implements com.alkemy.wallet.services.PersonServi
     }
     @Override
     public Person findPersonByName(String name) {
-        return personRepository.findByName(name)
+        return personRepository.findByLastName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Persona no encontrada con nombre " + name));
     }
     @Override

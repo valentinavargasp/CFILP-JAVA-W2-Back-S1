@@ -9,12 +9,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface PersonRepository extends JpaRepository<Person, Integer> {
-
-    Optional<Person> findByIdentityCard(int identityCard);
-
-    Optional<Person> findByLastName(String lastName);
-}
 
 public interface PersonRepository extends JpaRepository<Person,Integer> {
     Optional<Person> findByName(String name);
