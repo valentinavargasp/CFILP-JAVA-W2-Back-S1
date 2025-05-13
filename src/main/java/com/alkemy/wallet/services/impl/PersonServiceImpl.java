@@ -3,9 +3,9 @@ package com.alkemy.wallet.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alkemy.wallet.models.Person;
+import com.alkemy.wallet.models.user.Person;
 
-import com.alkemy.wallet.repository.PersonRepository;
+import com.alkemy.wallet.repository.user.PersonRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

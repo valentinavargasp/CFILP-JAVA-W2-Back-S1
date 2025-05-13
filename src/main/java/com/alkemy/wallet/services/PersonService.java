@@ -1,6 +1,6 @@
 package com.alkemy.wallet.services;
 
-import com.alkemy.wallet.models.Person;
+import com.alkemy.wallet.models.user.Person;
 import java.util.List;
 
 

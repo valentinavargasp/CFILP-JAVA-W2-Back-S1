@@ -1,4 +1,4 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,10 +19,6 @@ public class Person {
 
     @Column(name = "id_person")
     private int idPerson;
-
-    @Column(name="id_person")
-    private int id;
-
 
     @Column(name = "name")
     private String name;

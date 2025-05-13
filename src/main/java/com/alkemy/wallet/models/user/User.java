@@ -5,7 +5,6 @@ package com.alkemy.wallet.models.user;
 
 import java.util.List;
 
-import com.alkemy.wallet.models.Person;
 import com.alkemy.wallet.models.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -52,7 +51,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<UserRole> userRoles;
-    private Person person2; // Foreign key de la tabla user a la tabla person.
 
     // Constructor
     public User() {
