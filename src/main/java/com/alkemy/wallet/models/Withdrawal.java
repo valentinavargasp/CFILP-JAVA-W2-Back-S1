@@ -1,6 +1,14 @@
 package com.alkemy.wallet.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-//TODO: entity withdrawal
+@Entity
 public class Withdrawal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
 }
