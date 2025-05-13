@@ -1,5 +1,14 @@
 package com.alkemy.wallet.models;
 
-//TODO: entity time deposit
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class TimeDeposit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 }
