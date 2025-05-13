@@ -6,7 +6,6 @@ import com.alkemy.wallet.models.Account;
 
 
 public interface AccountService {
-    //TODO Metodos para crear, editar, borrar, buscar cuentas
 
     public Account createAccount(Account account);
 
