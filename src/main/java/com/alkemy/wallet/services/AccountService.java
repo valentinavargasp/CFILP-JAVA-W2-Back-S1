@@ -1,7 +1,7 @@
 package com.alkemy.wallet.services;
 
 
-import com.alkemy.wallet.models.Account;
+import com.alkemy.wallet.models.account.Account;
 
 
 

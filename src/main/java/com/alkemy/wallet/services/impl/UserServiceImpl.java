@@ -9,8 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alkemy.wallet.models.User;
-import com.alkemy.wallet.repository.UserRepository;
+import com.alkemy.wallet.models.user.User;
+import com.alkemy.wallet.repository.user.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {

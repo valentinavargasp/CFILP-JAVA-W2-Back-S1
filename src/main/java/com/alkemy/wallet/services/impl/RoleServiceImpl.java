@@ -1,7 +1,7 @@
 package com.alkemy.wallet.services.impl;
 
-import com.alkemy.wallet.models.Role;
-import com.alkemy.wallet.repository.RoleRepository;
+import com.alkemy.wallet.models.user.Role;
+import com.alkemy.wallet.repository.user.RoleRepository;
 import com.alkemy.wallet.services.RoleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
