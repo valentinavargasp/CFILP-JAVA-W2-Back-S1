@@ -75,4 +75,8 @@ public class Person {
                 ", dateBirth='" + dateBirth + '\'' +
                 '}';
     }
+
+    public String getFullName() {
+        return name + " " + lastName;
+    }
 }
