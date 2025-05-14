@@ -1,5 +1,12 @@
 package com.alkemy.wallet.services;
 
-public interface TransferService {
+import java.util.List;
 
+
+
+import com.alkemy.wallet.models.transaction.Transfer;
+
+
+public interface TransferService extends TransactionService<Transfer> { // Extiende de TransactionService
+    public List<Transfer> getByDestinationAccountId(int accountId);
 }
