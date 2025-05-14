@@ -1,4 +1,4 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -20,7 +20,7 @@ import lombok.Setter;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user_role")
+    @Column(name="id_user_role")
     private int id;
 
     //Relaciones
@@ -46,9 +46,10 @@ public class UserRole {
 
     }
 
+
     @Override
     public String toString(){
-        return "UserRole [id =" + id + ", user = " + user.getId() + ", role = " + role.getId() + "]";
+        return "UserRole [id =" + id + ", user = " + user.getId() + ", role = " + role + "]";
     }
     
 }

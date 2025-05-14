@@ -1,7 +1,8 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.transaction;
 
 import java.time.LocalDateTime;
 
+import com.alkemy.wallet.models.account.Account;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

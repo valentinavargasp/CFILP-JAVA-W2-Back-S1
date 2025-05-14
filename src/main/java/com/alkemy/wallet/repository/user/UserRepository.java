@@ -1,11 +1,11 @@
-package com.alkemy.wallet.repository;
+package com.alkemy.wallet.repository.user;
 
-import java.util.List;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.alkemy.wallet.models.User;
+import com.alkemy.wallet.models.user.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    List<User> findAll();
+
 }

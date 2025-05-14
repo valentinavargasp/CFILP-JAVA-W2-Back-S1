@@ -1,4 +1,4 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.account;
 
 import java.util.List;
 
@@ -51,4 +51,4 @@ public class AccountType {
                 " }";
     }
 
-}// comentario nadia
+}

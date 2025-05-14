@@ -1,5 +1,6 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.account;
 
+import com.alkemy.wallet.models.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -61,10 +62,13 @@ public class Account {
         this.currency = currency;
     }
 
+/*reemplace accountType.getAccontType por accountType, el valor se obtiene al instanciar el objeto creo, esto me tira error en intelliJ"
+
+ */
     @Override
     public String toString() {
         return "Account [id=" + id + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
-                + ", accountType=" + accountType.getAccountType() + ", currency=" + currency + "]";
+                + ", accountType=" + accountType + ", currency=" + currency + "]";
     }
 
 }

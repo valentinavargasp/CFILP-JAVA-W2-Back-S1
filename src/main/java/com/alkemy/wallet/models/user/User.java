@@ -1,10 +1,11 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.user;
 
 
 
 
 import java.util.List;
 
+import com.alkemy.wallet.models.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -24,10 +25,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "user")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user") 
+    @Column(name="id_user")
     private int id;
 
     @Column(name = "email")
@@ -50,7 +51,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<UserRole> userRoles;
-
 
     // Constructor
     public User() {

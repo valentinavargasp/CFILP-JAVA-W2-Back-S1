@@ -1,4 +1,4 @@
-package com.alkemy.wallet.models;
+package com.alkemy.wallet.models.user;
 
 import java.util.List;
 
