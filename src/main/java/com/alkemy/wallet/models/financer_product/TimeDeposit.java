@@ -1,4 +1,4 @@
-package com.alkemy.wallet.models.transaction;
+package com.alkemy.wallet.models.financer_product;
 
 
 import jakarta.persistence.*;
