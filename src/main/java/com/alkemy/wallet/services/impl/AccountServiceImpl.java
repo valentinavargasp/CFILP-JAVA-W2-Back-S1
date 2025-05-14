@@ -24,11 +24,21 @@ public class AccountServiceImpl implements AccountService {
     
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AccountTypeRepository accountTypeRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private FinancerProductRepository financerProductRepository;
+
 
     @Override
     public Account getAccountById(int id) {
         return accountRepository.findById(id).orElse(null);
     }
+
     @Override
     public Account editAccount(int id, Account newAccountData) {
         return accountRepository.findById(id).map(account -> {
@@ -48,7 +58,19 @@ public class AccountServiceImpl implements AccountService {
         }).orElseThrow(() -> new RuntimeException("Cuenta no encontrada con id " + id));
     }
 
-    
+    @Override
+    public List<Account> getAllAccountByUserId(int userId) {
+        try {
+            List<Account> accounts = accountRepository.findByUserId(userId);
+            if (accounts.isEmpty()) {
+                throw new RuntimeException("No se encontraron cuentas para el usuario con ID " + userId);
+            }
+            return accounts;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     @Override
     public void  deleteAccountById(int id) {
         if (!accountRepository.existsById(id)) {
@@ -56,19 +78,6 @@ public class AccountServiceImpl implements AccountService {
         }
         accountRepository.deleteById(id);
     }
-
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AccountTypeRepository accountTypeRepository;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @Autowired
-    private FinancerProductRepository financerProductRepository;
 
     @Override
     public List<Account> getAllAccounts() {
@@ -95,18 +104,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
-    @Override
-    public List<Account> getAllAccountByUserId(int userId) {
-        try {
-            List<Account> accounts = accountRepository.findByUserId(userId);
-            if (accounts.isEmpty()) {
-                throw new RuntimeException("No se encontraron cuentas para el usuario con ID " + userId);
-            }
-            return accounts;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+
 
     @Override
     public List<Transaction> getAccountTransactions(int accountId) {
@@ -116,7 +114,6 @@ public class AccountServiceImpl implements AccountService {
         }
         return transactions;
     }
-
 
     @Override
     public List<FinancerProduct> getAccountFinancerProducts(int accountId) {
