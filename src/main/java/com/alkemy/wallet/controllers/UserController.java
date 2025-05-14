@@ -12,6 +12,7 @@ import com.alkemy.wallet.models.user.User;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
