@@ -6,15 +6,7 @@ import java.util.List;
 
 public interface CreditCardService extends CardService<CreditCard>{
 
-    public CreditCard save(CreditCard creditCard);
-    public CreditCard getById(int id);
-    public void deleteById(int id);
+//TODO: implementar metodos para consultar saldo, realizar pagos, compras, cuotas etc..
 
-    public CreditCard getByNumber(String number);
-    public CreditCard getByExpirationDate(String expirationDate);
-
-    public List<CreditCard> getByCardHolderName(String cardHolderName);
-    public List<CreditCard> getAllByAccountId(int accountId);
-    public List<CreditCard> getAllByUserId(int userId);
 
 }

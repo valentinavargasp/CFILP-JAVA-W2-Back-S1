@@ -35,4 +35,8 @@ public abstract class Card extends FinancerProduct {
             this.nameHolder = getAccount().getUser().getPerson().getFullName();
         }
     }
+
+    public Object getCardHolderName() {
+        return nameHolder;
+    }
 }
