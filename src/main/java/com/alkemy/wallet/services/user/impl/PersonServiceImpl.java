@@ -1,6 +1,7 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.user.impl;
 
 
+import com.alkemy.wallet.services.user.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alkemy.wallet.models.user.Person;
@@ -14,7 +15,7 @@ import java.util.List;
 
 
 @Service
-public class PersonServiceImpl implements com.alkemy.wallet.services.PersonService {
+public class PersonServiceImpl implements PersonService {
 
 
     @Autowired

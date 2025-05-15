@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "card")
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Card extends FinancerProduct {
 
     @Column(nullable = false, name = "card_number")

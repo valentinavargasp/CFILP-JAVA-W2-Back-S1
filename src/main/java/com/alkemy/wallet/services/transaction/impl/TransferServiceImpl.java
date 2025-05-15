@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.alkemy.wallet.models.transaction.Transfer;
 import com.alkemy.wallet.repository.transaction.TransferRepository;
-import com.alkemy.wallet.services.TransferService;
+import com.alkemy.wallet.services.transaction.TransferService;
 
 @Service
 public class TransferServiceImpl extends TransactionServiceImpl<Transfer> implements TransferService {

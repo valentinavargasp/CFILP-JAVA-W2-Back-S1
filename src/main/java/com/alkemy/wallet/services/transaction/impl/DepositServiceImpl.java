@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.alkemy.wallet.models.transaction.Deposit;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
 import com.alkemy.wallet.repository.transaction.DepositRepository;
-import com.alkemy.wallet.services.DepositService;
+import com.alkemy.wallet.services.transaction.DepositService;
 
 import jakarta.persistence.EntityNotFoundException;
 
