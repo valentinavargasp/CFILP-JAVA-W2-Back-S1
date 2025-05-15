@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services;
+package com.alkemy.wallet.services.transaction;
 
 import java.time.LocalDate;
 import java.util.List;

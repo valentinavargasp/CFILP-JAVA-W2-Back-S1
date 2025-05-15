@@ -1,8 +1,8 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.user.impl;
 
 import java.util.List;
 
-import com.alkemy.wallet.services.UserService;
+import com.alkemy.wallet.services.user.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 

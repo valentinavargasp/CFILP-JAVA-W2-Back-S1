@@ -2,7 +2,7 @@ package com.alkemy.wallet.controllers;
 
 import java.util.List;
 
-import com.alkemy.wallet.services.UserService;
+import com.alkemy.wallet.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

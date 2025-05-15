@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import com.alkemy.wallet.models.user.Person;
-import com.alkemy.wallet.services.PersonService;
+import com.alkemy.wallet.services.user.PersonService;
 
 import jakarta.persistence.EntityNotFoundException;
 

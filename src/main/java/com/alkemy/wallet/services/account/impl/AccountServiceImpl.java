@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.account.impl;
 
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.account.AccountType;
@@ -10,7 +10,7 @@ import com.alkemy.wallet.repository.account.AccountTypeRepository;
 import com.alkemy.wallet.repository.financer_product.FinancerProductRepository;
 import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
-import com.alkemy.wallet.services.AccountService;
+import com.alkemy.wallet.services.account.AccountService;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class AccountServiceImpl implements AccountService {
 
     

@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.transaction.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.alkemy.wallet.models.transaction.Transaction;
-import com.alkemy.wallet.services.TransactionService;
+import com.alkemy.wallet.services.transaction.TransactionService;
 
 public abstract class TransactionServiceImpl<T extends Transaction> implements TransactionService<T> {
 

@@ -1,11 +1,11 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.user.impl;
 
 import com.alkemy.wallet.models.user.Role;
 import com.alkemy.wallet.models.user.User;
 import com.alkemy.wallet.repository.user.RoleRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.repository.user.UserRoleRepository;
-import com.alkemy.wallet.services.UserRoleService;
+import com.alkemy.wallet.services.user.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
