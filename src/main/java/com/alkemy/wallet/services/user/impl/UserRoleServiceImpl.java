@@ -24,11 +24,16 @@ public class UserRoleServiceImpl implements UserRoleService {
 
 
 
-    //TODO:   implementar la logica necesaria para la interaccion entre la tabla rol y  user.
-
     @Override
     public List<User> getAllUsersByRole(String role) {
-        return List.of();
+        if(role == null ){
+            throw new IllegalArgumentException("El rol no puede ser nulo");
+        }
+        try {
+            return userRepository.findByRoles_RoleName(role);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

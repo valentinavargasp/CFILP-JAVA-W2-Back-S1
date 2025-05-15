@@ -62,4 +62,8 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
 
         return withdrawals;
     }
+
+
+    //TODO: RETIRAR TIENE QEU ACTUALIZAR EL SALDO DE LA CUENTA ASOCIADA
+
 }

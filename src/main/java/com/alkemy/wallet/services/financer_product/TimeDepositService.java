@@ -6,13 +6,10 @@ import java.util.List;
 
 public interface TimeDepositService extends FinancerProductService<TimeDeposit> {
 
-    public TimeDeposit save(TimeDeposit timeDeposit);
-    public TimeDeposit getById(int id);
-    public void deleteById(int id);
+    //TODO: metodos para el plazo fijo, tiene que debitar de la cuenta el monto a colocar, sumarle el interes y  devolverlo al finalizar el plazo .
 
     public TimeDeposit getByExpirationDate(String expirationDate);
 
-    public List<TimeDeposit> getAllByAccountId(int accountId);
-    public List<TimeDeposit> getAllByUserId(int userId);
+
 
 }

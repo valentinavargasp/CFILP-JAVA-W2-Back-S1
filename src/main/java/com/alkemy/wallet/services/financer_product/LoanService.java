@@ -6,13 +6,7 @@ import java.util.List;
 
 public interface LoanService extends FinancerProductService<Loan> {
 
-    public Loan save(Loan loan);
-    public Loan getById(int id);
-    public void deleteById(int id);
-
-    public List<Loan> getAllByAccountId(int accountId);
-    public List<Loan> getAllByUserId(int userId);
-
+//TODO: metodos propios de un prestamo,  solicitar un prestamo tiene que actualizar el saldo en la cuenta, generar las cuotas, etc.
 
 
 }
