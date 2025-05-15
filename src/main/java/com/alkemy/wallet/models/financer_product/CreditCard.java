@@ -12,12 +12,15 @@ import lombok.*;
 @Entity
 public class CreditCard extends Card{
 
-    private Double availableCredit;
-    private Double creditLimit;
-    private Double interestRate;
-    private Double monthlyPayment;
-    private Double totalPayment;
-    private Double totalInterest;
-
+    @Column(name = "available_credit")
+    private Double availableCredit; //credito disponible
+    @Column(name = "credit_limit")
+    private Double creditLimit;  // limite de credito maximo
+    @Column(name = "interest_rate")
+    private Double interestRate;  //interes mensual
+    @Column(name = "monthly_payment")
+    private Double monthlyPayment; // pago mensual (podria ser segun las cuotas que se le asignen)
+    @Column(name = "total_payment")
+    private Double totalPayment;  // suma de los pagos mensuales
 
 }
