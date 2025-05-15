@@ -2,10 +2,13 @@ package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
 import com.alkemy.wallet.models.transaction.Withdrawal;
+import com.alkemy.wallet.repository.account.AccountRepository;
 import com.alkemy.wallet.repository.transaction.WithdrawalRepository;
 import com.alkemy.wallet.services.transaction.WithdrawalService;
 
@@ -14,6 +17,9 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> implements WithdrawalService {
 
+    @Autowired
+    private AccountRepository accountRepository;
+    
     private final WithdrawalRepository withdrawalRepository;
 
     public WithdrawalServiceImpl(WithdrawalRepository withdrawalRepository) {
@@ -65,5 +71,31 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
 
 
     //TODO: RETIRAR TIENE QEU ACTUALIZAR EL SALDO DE LA CUENTA ASOCIADA
+
+    /**
+     * Al guardar un retiro:
+     * 1. Buscamos la cuenta origen.
+     * 2. Verificamos que tenga saldo suficiente.
+     * 3. Restamos el monto y actualizamos la cuenta.
+     * 4. Finalmente, guardamos la transacción.
+     */
+    @Override
+public Withdrawal save(Withdrawal withdrawal) {
+    Account account = withdrawal.getAccount(); //Cuenta desde donde se retira
+    double monto = withdrawal.getTransactionAmount();
+
+    Account cuenta = accountRepository.findById(account.getId())
+        .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + account.getId()));
+
+    if (cuenta.getBalance() < monto) {
+        throw new IllegalArgumentException("Saldo insuficiente para retirar");
+    }
+
+    cuenta.setBalance(cuenta.getBalance() - monto);
+    accountRepository.save(cuenta);
+
+    return super.save(withdrawal);
+}
+
 
 }
