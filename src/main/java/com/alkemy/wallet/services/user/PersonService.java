@@ -18,5 +18,7 @@ public interface PersonService {
     public Person findPersonByAddress(String address);
     public Person findPersonByIdentityCard(int identityCard);
     public Person findPersonByDateBirth(String dateBirth);
+    public List<Person> getAllPersons();  // NUEVO: método para listar todas las personas
+
 
 }
