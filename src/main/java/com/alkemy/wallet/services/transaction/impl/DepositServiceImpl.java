@@ -2,10 +2,13 @@ package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.transaction.Deposit;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
+import com.alkemy.wallet.repository.account.AccountRepository;
 import com.alkemy.wallet.repository.transaction.DepositRepository;
 import com.alkemy.wallet.services.transaction.DepositService;
 
@@ -14,6 +17,8 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class DepositServiceImpl extends TransactionServiceImpl<Deposit> implements DepositService { // Implementa
                                                                                                     // DepositService
+    @Autowired
+    private AccountRepository accountRepository;
 
     private final DepositRepository depositRepository;
 
@@ -72,5 +77,23 @@ public class DepositServiceImpl extends TransactionServiceImpl<Deposit> implemen
         return deposits;
     }
 
-    //TODO: DEPOSITAR TIENE QUE ACTUALIZAR EL SALDO EN ACCOUNT
+    // TODO: DEPOSITAR TIENE QUE ACTUALIZAR EL SALDO EN ACCOUNT
+
+    @Override
+    public Deposit save(Deposit deposit) {
+        Account account = deposit.getAccount();
+
+        // Verificamos que exista la cuenta
+        Account existingAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + account.getId()));
+
+        // Actualiza el saldo
+        double nuevoSaldo = existingAccount.getBalance() + deposit.getTransactionAmount();
+        existingAccount.setBalance(nuevoSaldo);
+        accountRepository.save(existingAccount);
+
+        // Guarda el depósito
+        return super.save(deposit);
+    }
+
 }
