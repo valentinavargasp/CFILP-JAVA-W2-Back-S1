@@ -18,68 +18,70 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
 
-
-
+/**
+     * Devuelve todos los usuarios que tienen un rol específico por nombre.
+     * Ejemplo: "ADMIN"
+     * Lanza excepción si el rol es nulo o vacío.
+     */
     @Override
     public List<User> getAllUsersByRole(String role) {
-        if(role == null ){
-            throw new IllegalArgumentException("El rol no puede ser nulo");
+        if (role == null || role.isEmpty()) {
+            throw new IllegalArgumentException("El rol no puede ser nulo o vacío");
         }
-        try {
-            return userRepository.findByRoles_RoleName(role);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        return userRepository.findByUserRoles_Role_RoleName(role);
     }
 
+/**
+     * Devuelve todos los usuarios que tienen un rol específico por ID.
+     */
     @Override
     public List<User> getAllUsersByRoleId(int id) {
-        try {
-            return userRepository.findByRoles_Id(id);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        return userRepository.findByUserRoles_Role_Id(id);
     }
 
-    @Override
-    public List<Role> getAllRolesByUserId(int id) {
-       try {
-           return userRoleRepository.findAllByUserId(id);
-       } catch (RuntimeException e) {
-           throw new RuntimeException(e);
-       }
-    }
+        /**
+     * Devuelve todos los roles que tiene un usuario, accediendo por su ID.
+     * Mapea la relación desde UserRole para devolver una lista de objetos Role.
+     */
+@Override
+public List<Role> getAllRolesByUserId(int id) {
+    return userRoleRepository.findAllByUser_Id(id).stream()
+        .map(UserRole::getRole)
+        .toList();
+}
 
+    /**
+     * Asigna un rol a un usuario. Verifica que existan ambos antes de guardar.
+     */
     @Override
     public void saveUserRole(int userId, int roleId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + userId));
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con id: " + roleId));
-        try {
-            userRoleRepository.save(new UserRole(user, role));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        userRoleRepository.save(new UserRole(user, role));
     }
 
+    /**
+     * Elimina una asignación de rol de un usuario.
+     * Si no existe esa relación, lanza una excepción.
+     */
     @Override
     public void deleteUserRole(int userId, int roleId) {
-        try {
-            UserRole userRole = userRoleRepository.findByUserIdAndRoleId(userId, roleId);
-            if (userRole != null) {
-                userRoleRepository.delete(userRole);
-            }else {
-                throw new IllegalArgumentException("No se puede eliminar. Rol no encontrado con id: " + roleId);
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        UserRole userRole = userRoleRepository.findByUser_IdAndRole_Id(userId, roleId);
+        if (userRole != null) {
+            userRoleRepository.delete(userRole);
+        } else {
+            throw new IllegalArgumentException("No se puede eliminar. Rol no encontrado con id: " + roleId);
         }
     }
-
 }
+
