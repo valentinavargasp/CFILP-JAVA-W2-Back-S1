@@ -3,6 +3,7 @@ package com.alkemy.wallet.controllers;
 import com.alkemy.wallet.models.user.Role;
 import com.alkemy.wallet.services.user.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,14 @@ public class RoleController {
     }
 
     @Operation(summary = "Listar todos los roles")
+    @ApiResponse(responseCode = "200", description = "Lista de roles")
     @GetMapping
     public ResponseEntity<List<Role>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     @Operation(summary = "Obtener un rol por ID")
+    @ApiResponse(responseCode = "200", description = "Rol encontrado")
     @GetMapping("/{id}")
     public ResponseEntity<Role> getRoleById(@PathVariable int id) {
         Role role = roleService.getRoleById(id);
@@ -35,13 +38,15 @@ public class RoleController {
     }
 
     @Operation(summary = "Crear un nuevo rol")
+    @ApiResponse(responseCode = "201", description = "Rol creado")
     @PostMapping
     public ResponseEntity<Role> createRole(@RequestBody Role role) {
         Role savedRole = roleService.saveRole(role);
-        return ResponseEntity.ok(savedRole);
+        return ResponseEntity.status(201).body(savedRole);
     }
 
     @Operation(summary = "Actualizar un rol existente")
+    @ApiResponse(responseCode = "200", description = "Rol actualizado")
     @PutMapping("/{id}")
     public ResponseEntity<Role> updateRole(@PathVariable int id, @RequestBody Role role) {
         Role updatedRole = roleService.editRole(id, role);
@@ -49,6 +54,7 @@ public class RoleController {
     }
 
     @Operation(summary = "Eliminar un rol por ID")
+    @ApiResponse(responseCode = "204", description = "Rol eliminado")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRole(@PathVariable int id) {
         roleService.deleteRoleById(id);
