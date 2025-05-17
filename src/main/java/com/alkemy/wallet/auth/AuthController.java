@@ -32,6 +32,9 @@ public class AuthController {
 
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String token = jwtService.generateToken(userDetails);
+
+        System.out.println("login exitoso del usuario: " + userDetails.getUsername() + " con token: " + token );
+
         return ResponseEntity.ok(new AuthResponse(token));
     }
 }

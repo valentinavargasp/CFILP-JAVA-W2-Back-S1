@@ -40,6 +40,9 @@ public class CustomUserDetailService implements UserDetailsService {
                         .collect(Collectors.toList()) :
                 Collections.emptyList();
 
+        System.out.println("CustomDetailService:");
+        System.out.println("Cargando el usuario: " + user.getEmail() + " con roles: " + authorities.toString());
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
