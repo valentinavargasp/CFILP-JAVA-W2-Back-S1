@@ -1,6 +1,7 @@
 package com.alkemy.wallet.services.user.impl;
 
 import com.alkemy.wallet.services.user.PersonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alkemy.wallet.models.user.Person;
@@ -13,10 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    @Autowired
-    private PersonRepository personRepository;
+
+    private final PersonRepository personRepository;
 
     @Override
     public List<Person> getAllPersons() {
