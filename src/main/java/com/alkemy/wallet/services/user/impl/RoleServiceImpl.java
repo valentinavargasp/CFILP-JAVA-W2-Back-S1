@@ -1,16 +1,15 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.user.impl;
 
 import com.alkemy.wallet.models.user.Role;
 import com.alkemy.wallet.repository.user.RoleRepository;
-import com.alkemy.wallet.services.RoleService;
+import com.alkemy.wallet.services.user.RoleService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import jakarta.persistence.EntityNotFoundException;
-
-
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -24,27 +23,39 @@ public class RoleServiceImpl implements RoleService {
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado con id: " + id));
     }
 
+    @Override
     public Role getRoleByName(String name) {
         return roleRepository.findByRoleName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado: " + name));
     }
 
-    public void saveRole(Role role) {
-        roleRepository.save(role);
+    @Override
+    public Role saveRole(Role role) {
+        return roleRepository.save(role);
     }
 
-    public void deleteRoleById(int id) {
+    @Override
+    public Role deleteRoleById(int id) {
         if (!roleRepository.existsById(id)) {
             throw new EntityNotFoundException("No se puede eliminar. Rol no encontrado con id " + id);
         }
+        Role role = roleRepository.findById(id).orElseThrow();
         roleRepository.deleteById(id);
+        return role;
     }
 
-    // TODO: implementar la logica del metodo editRole.
-    public void editRole(Role role) {
-        if (!roleRepository.existsById(role.getId())) {
-            throw new EntityNotFoundException("No se puede editar. Rol no encontrado con id " + role.getId());
-        }
-        roleRepository.save(role);
+    @Override
+    public Role editRole(int id, Role role) {
+        Role existingRole = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No se puede editar. Rol no encontrado con id " + id));
+        existingRole.setRoleName(role.getRoleName());
+        return roleRepository.save(existingRole);
     }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.alkemy.wallet.services;
+package com.alkemy.wallet.services.user;
 
 import com.alkemy.wallet.models.user.Person;
 import java.util.List;
@@ -18,5 +18,7 @@ public interface PersonService {
     public Person findPersonByAddress(String address);
     public Person findPersonByIdentityCard(int identityCard);
     public Person findPersonByDateBirth(String dateBirth);
+    public List<Person> getAllPersons();  // NUEVO: método para listar todas las personas
+
 
 }
