@@ -1,27 +1,43 @@
-package com.alkemy.wallet.services.impl;
+package com.alkemy.wallet.services.account.impl;
 
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.account.AccountType;
+import com.alkemy.wallet.models.financer_product.FinancerProduct;
+import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.models.user.User;
 import com.alkemy.wallet.repository.account.AccountRepository;
 import com.alkemy.wallet.repository.account.AccountTypeRepository;
+import com.alkemy.wallet.repository.financer_product.FinancerProductRepository;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
-import com.alkemy.wallet.services.AccountService;
+import com.alkemy.wallet.services.account.AccountService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class AccountServiceImpl implements AccountService {
 
     
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AccountTypeRepository accountTypeRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private FinancerProductRepository financerProductRepository;
+
 
     @Override
     public Account getAccountById(int id) {
         return accountRepository.findById(id).orElse(null);
     }
+
     @Override
     public Account editAccount(int id, Account newAccountData) {
         return accountRepository.findById(id).map(account -> {
@@ -41,7 +57,19 @@ public class AccountServiceImpl implements AccountService {
         }).orElseThrow(() -> new RuntimeException("Cuenta no encontrada con id " + id));
     }
 
-    
+    @Override
+    public List<Account> getAllAccountByUserId(int userId) {
+        try {
+            List<Account> accounts = accountRepository.findByUserId(userId);
+            if (accounts.isEmpty()) {
+                throw new RuntimeException("No se encontraron cuentas para el usuario con ID " + userId);
+            }
+            return accounts;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     @Override
     public void  deleteAccountById(int id) {
         if (!accountRepository.existsById(id)) {
@@ -50,12 +78,15 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.deleteById(id);
     }
 
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AccountTypeRepository accountTypeRepository;
+    @Override
+    public List<Account> getAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        if (accounts.isEmpty()) {
+            throw new RuntimeException("No se encontraron cuentas");
+        }
+        return accounts;
+        
+    }
 
     @Override
     public Account createAccount(Account account) {
@@ -71,4 +102,25 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(0);
         return accountRepository.save(account);
     }
+
+
+
+    @Override
+    public List<Transaction> getAccountTransactions(int accountId) {
+        List<Transaction> transactions = transactionRepository.findByAccountId(accountId);
+        if (transactions.isEmpty()) {
+            throw new RuntimeException("No se encontraron transacciones para la cuenta con ID " + accountId);
+        }
+        return transactions;
+    }
+
+    @Override
+    public List<FinancerProduct> getAccountFinancerProducts(int accountId) {
+        List<FinancerProduct> products = financerProductRepository.findByAccountId(accountId);
+        if (products.isEmpty()) {
+            throw new RuntimeException("No se encontraron productos financieros para la cuenta con ID " + accountId);
+        }
+        return products;
+    }
+
 }
