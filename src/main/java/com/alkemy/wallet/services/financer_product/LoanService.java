@@ -8,5 +8,7 @@ public interface LoanService extends FinancerProductService<Loan> {
 
 //TODO: metodos propios de un prestamo,  solicitar un prestamo tiene que actualizar el saldo en la cuenta, generar las cuotas, etc.
 
+    public void payLoan(int loanId);
+
 
 }

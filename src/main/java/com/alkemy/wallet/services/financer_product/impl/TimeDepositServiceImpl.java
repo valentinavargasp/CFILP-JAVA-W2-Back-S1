@@ -15,7 +15,6 @@ public class TimeDepositServiceImpl implements TimeDepositService {
 
 
     private final TimeDepositRepository timeDepositRepository;
-    private final AccountRepository accountRepository;
 
     @Override
     public TimeDeposit getByExpirationDate(String expirationDate) {
