@@ -1,6 +1,7 @@
 package com.alkemy.wallet.services.financer_product.impl;
 
 import com.alkemy.wallet.models.financer_product.Card;
+import com.alkemy.wallet.models.financer_product.DebitCard;
 import com.alkemy.wallet.services.financer_product.CardService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,7 +35,7 @@ public abstract class CardServiceImpl<T extends Card> extends FinancerProductSer
     }
 
     @Override
-    public T getByExpirationDate(String expirationDate) {
+    public List<DebitCard> getByExpirationDate(String expirationDate) {
         if (expirationDate == null || expirationDate.trim().isEmpty()) {
             throw new IllegalArgumentException("La fecha no puede estar vacía.");
         }

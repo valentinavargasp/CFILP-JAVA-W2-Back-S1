@@ -54,4 +54,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Ruta no encontrada: " + e.getRequestURL());
     }
+
+
+    //FONDOS INSUFICIENTES PARA TRANSACCIONES O PAGOS
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<String> handleInsufficientFunds(InsufficientFundsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Fondos insuficientes: " + e.getMessage());
+    }
+
+
 }

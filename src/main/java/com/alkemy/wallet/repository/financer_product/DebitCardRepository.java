@@ -7,4 +7,5 @@ import com.alkemy.wallet.models.financer_product.DebitCard;
 public interface DebitCardRepository extends JpaRepository<DebitCard, Integer> {
 
 
+    DebitCard findByCardNumber(String number);
 }
