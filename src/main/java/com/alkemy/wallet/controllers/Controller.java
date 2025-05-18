@@ -12,6 +12,7 @@ public class Controller {
 
     @GetMapping()
     public String index() {
+        System.out.println("GetMapping /");
         return "Inicio";
     }
 
