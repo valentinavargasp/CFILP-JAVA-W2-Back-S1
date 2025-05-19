@@ -41,4 +41,8 @@ public class UserRole {
     @JoinColumn(name = "id_role", referencedColumnName = "id_role")
     private Role role;
 
+    public UserRole(User user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 }
