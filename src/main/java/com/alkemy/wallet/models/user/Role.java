@@ -10,11 +10,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "role")
 public class Role {
@@ -29,22 +35,5 @@ public class Role {
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     private List<UserRole> roles;
-
-    public Role() {
-
-    }
-
-    public Role(int id, String role) {
-        this.id = id;
-        this.roleName = role;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleName=" + roleName +
-                " }";
-    }
 
 }
