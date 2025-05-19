@@ -2,7 +2,7 @@ package com.alkemy.wallet.services.user.impl;
 
 import com.alkemy.wallet.services.user.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import com.alkemy.wallet.models.user.Person;
 

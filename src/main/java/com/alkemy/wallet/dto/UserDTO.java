@@ -11,7 +11,5 @@ public class UserDTO {
 
     private int id;
     private String username;
-    private String email;
-    private String fullName; //Podríamos formarlo acá a partir de la entidad persona
-    
+
 }

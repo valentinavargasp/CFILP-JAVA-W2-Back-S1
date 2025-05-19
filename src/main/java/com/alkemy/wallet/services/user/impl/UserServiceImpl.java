@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id " + id));
 
         // Actualiza los campos editables
-        user.setEmail(newUserData.getEmail());
         user.setUsername(newUserData.getUsername());
         // NOTA: no tocamos password ni roles ni accounts por ahora
 
