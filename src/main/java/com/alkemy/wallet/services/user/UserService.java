@@ -1,14 +1,14 @@
 package com.alkemy.wallet.services.user;
 
-import com.alkemy.wallet.models.user.User;
+import com.alkemy.wallet.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
 
-    public User saveUser(User user);
-    public User getUserById(int id);
-    public List<User> getAllUsers();
+    public UserDTO saveUser(UserDTO userDTO);
+    public UserDTO getUserById(int id);
+    public List<UserDTO> getAllUsers();
     public void deleteUserById(int id);
-    public User editUserById(int id, User newUserData);
+    public UserDTO editUserById(int id, UserDTO newUserData);
 }

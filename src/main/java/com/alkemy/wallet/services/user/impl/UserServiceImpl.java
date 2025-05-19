@@ -1,45 +1,55 @@
 package com.alkemy.wallet.services.user.impl;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 import com.alkemy.wallet.services.user.UserService;
-
 import jakarta.persistence.EntityNotFoundException;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.alkemy.wallet.dto.UserDTO;
+import com.alkemy.wallet.mapper.UserMapper;
 import com.alkemy.wallet.models.user.User;
 import com.alkemy.wallet.repository.user.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    
+    private final UserRepository userRepository;
+    private UserMapper userMapper;
 
+    /**
+     * Devuelve todos los usuarios como DTOs.
+     */
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-
+    /**
+     * Edita un usuario por ID y devuelve el nuevo UserDTO.
+     */
     @Override
-    public User editUserById(int id, User newUserData) {
+    public UserDTO editUserById(int id, UserDTO newUserData) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id " + id));
 
+        // Actualiza los campos editables
+        user.setEmail(newUserData.getEmail());
+        user.setUsername(newUserData.getUsername());
+        // NOTA: no tocamos password ni roles ni accounts por ahora
 
-            return userRepository.findById(id).map(user -> {
-
-            user.setEmail(newUserData.getEmail());
-            user.setPassword(newUserData.getPassword());
-            user.setPerson(newUserData.getPerson());
-            user.setAccounts(newUserData.getAccounts());
-            user.setUserRoles(newUserData.getUserRoles());
-
-            return userRepository.save(user);
-        }).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id " + id));
-
+        // Guarda cambios y retorna como DTO
+        User updated = userRepository.save(user);
+        return userMapper.toDTO(updated);
     };
 
+    /**
+     * Elimina un usuario por ID.
+     */
     @Override
     public void deleteUserById(int id) {
         if (!userRepository.existsById(id)) {
@@ -48,13 +58,24 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     */
     @Override
-    public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
+    public UserDTO getUserById(int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
+        return userMapper.toDTO(user);
     }
 
+    
+    /**
+     * Guarda un nuevo usuario a partir de un DTO.
+     */
     @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserDTO saveUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        User savedUser = userRepository.save(user);
+        return userMapper.toDTO(savedUser);
     }
 }
