@@ -4,11 +4,13 @@ import com.alkemy.wallet.models.financer_product.TimeDeposit;
 import com.alkemy.wallet.repository.account.AccountRepository;
 import com.alkemy.wallet.repository.financer_product.TimeDepositRepository;
 import com.alkemy.wallet.services.financer_product.TimeDepositService;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+
 import java.util.List;
 
 @Service
@@ -19,6 +21,7 @@ public class TimeDepositServiceImpl implements TimeDepositService {
     private final TimeDepositRepository timeDepositRepository;
 
     @Override
+
     public TimeDeposit getByExpirationDate(LocalDate expirationDate) {
         if (expirationDate == null) {
             throw new IllegalArgumentException("La fecha de vencimiento no puede ser nula");
@@ -28,6 +31,8 @@ public class TimeDepositServiceImpl implements TimeDepositService {
                 .orElseThrow(() -> new EntityNotFoundException(
                 "No se encontró plazo fijo con fecha de vencimiento: " + expirationDate));
 }
+
+    
 
     @Override
     public TimeDeposit save(TimeDeposit timeDeposit) {
@@ -86,4 +91,6 @@ public class TimeDepositServiceImpl implements TimeDepositService {
     }
 
 
+
 }
+

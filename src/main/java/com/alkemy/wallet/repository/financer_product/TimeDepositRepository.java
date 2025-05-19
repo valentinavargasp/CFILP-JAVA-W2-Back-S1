@@ -11,7 +11,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import java.sql.Time;
+import java.util.Optional;
+
 public interface TimeDepositRepository extends JpaRepository<TimeDeposit, Integer> {
+
 
 
     @Query("SELECT td FROM TimeDeposit td JOIN FETCH td.account a WHERE a.id = :accountId")
@@ -22,4 +26,7 @@ public interface TimeDepositRepository extends JpaRepository<TimeDeposit, Intege
 
 
     Optional<TimeDeposit> findByExpirationDate(LocalDate expirationDate);
+
+    
+
 }
