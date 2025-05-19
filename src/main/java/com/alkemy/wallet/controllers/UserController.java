@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(user); //si el usuario existe, se devuelve un 200 OK
     }
 
-@Operation(summary = "Crear nuevo usuario")
+    @Operation(summary = "Crear nuevo usuario")
     @ApiResponse(responseCode = "201", description = "Usuario creado")
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
