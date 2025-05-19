@@ -17,11 +17,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "user")
 public class User {
@@ -36,6 +42,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "username")
+    private String username;
 
     // Relación uno a uno con la entidad Person
     @OneToOne
@@ -52,19 +61,4 @@ public class User {
     @JsonIgnore
     private List<UserRole> userRoles;
 
-    // Constructor
-    public User() {
-    }
-
-    public User(String email, String password, Person person) {
-        this.email = email;
-        this.password = password;
-        this.person = person;
-    }
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
-    }
-    
 }

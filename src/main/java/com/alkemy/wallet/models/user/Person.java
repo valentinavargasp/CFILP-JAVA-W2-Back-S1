@@ -6,11 +6,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "person")
 public class Person {
@@ -43,38 +49,6 @@ public class Person {
 
     @Column(name = "date_birth")
     private String dateBirth; // AAAA-MM-DD
-
-    // Constructores
-    public Person() {
-    }
-
-    public Person(int id, String name, String lastName, String address, String location, String province,
-            String phoneNumber, int identityCard, String dateBirth) {
-        this.idPerson = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.address = address;
-        this.location = location;
-        this.province = province;
-        this.phoneNumber = phoneNumber;
-        this.identityCard = identityCard;
-        this.dateBirth = dateBirth;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + idPerson +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", location='" + location + '\'' +
-                ", province='" + province + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", identityCard=" + identityCard +
-                ", dateBirth='" + dateBirth + '\'' +
-                '}';
-    }
 
     public String getFullName() {
         return name + " " + lastName;
