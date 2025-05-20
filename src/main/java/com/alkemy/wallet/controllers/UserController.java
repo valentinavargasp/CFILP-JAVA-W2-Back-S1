@@ -2,6 +2,7 @@ package com.alkemy.wallet.controllers;
 
 import java.util.List;
 
+import com.alkemy.wallet.services.user.UserCreateService;
 import com.alkemy.wallet.services.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.alkemy.wallet.dto.UserCreateDTO;
 import com.alkemy.wallet.dto.UserDTO;
 
 @RestController
@@ -22,6 +24,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserCreateService userCreateService;
 
 
     @Operation(summary = "Obtener todos los usuarios")
@@ -43,13 +47,14 @@ public class UserController {
 
 
 
-    //TODO: para crear un usuario, se debería validar que el nombre no este en uso y que tenga una contraseña no nula. Para esto se recomienda el uso de otro DTO, UserCreateDTO
+    //UserCreateDTO es un DTO que contiene solo los campos necesarios para crear un usuario
+    //En este caso, solo el username y el password. El resto de los campos se rellenan automáticamente
     
     @Operation(summary = "Crear nuevo usuario")
     @ApiResponse(responseCode = "201", description = "Usuario creado")
     @PostMapping
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-        UserDTO savedUser = userService.saveUser(userDTO); //Si hay algún error de validación, lo manejará el GlobalExceptionHandler
+    public ResponseEntity<UserCreateDTO> saveUser(@RequestBody UserCreateDTO userCreateDTO) {
+        UserCreateDTO savedUser = userCreateService.saveUser(userCreateDTO); //Si hay algún error de validación, lo manejará el GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser); // Si todo va bien devuelve un 201 Created
     }
 
