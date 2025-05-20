@@ -1,10 +1,13 @@
 package com.alkemy.wallet.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import com.alkemy.wallet.dto.PersonDTO;
 import com.alkemy.wallet.dto.UserCreateDTO;
 import com.alkemy.wallet.dto.UserDTO;
+import com.alkemy.wallet.models.user.Person;
 import com.alkemy.wallet.models.user.User;
 
 /**
@@ -24,6 +27,12 @@ public interface UserMapper {
     UserCreateDTO toCreateDTO(User user);
     // Mapea UserCreateDTO -> User (incluye también el Person mapeado automáticamente)
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true) // Se setea manualmente luego
+    @Mapping(target = "accounts", ignore = true)
+    @Mapping(target = "userRoles", ignore = true)
     User toEntity(UserCreateDTO userCreateDTO);
     // Mapea User -> UserCreateDTO (incluye también el Person mapeado automáticamente)
+
+    Person toEntity(PersonDTO person);
 }
