@@ -2,7 +2,6 @@ package com.alkemy.wallet.controllers;
 
 import java.util.List;
 
-import com.alkemy.wallet.services.user.UserCreateService;
 import com.alkemy.wallet.services.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.alkemy.wallet.dto.UserCreateDTO;
 import com.alkemy.wallet.dto.UserDTO;
 
 @RestController
@@ -25,8 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserCreateService userCreateService;
-
+    
 
     @Operation(summary = "Obtener todos los usuarios")
     @ApiResponse(responseCode = "200", description = "Lista de usuarios")

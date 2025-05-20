@@ -27,6 +27,9 @@ public class UserCreateServiceImpl implements UserCreateService{
     public UserCreateDTO saveUser(UserCreateDTO userCreateDTO) {
         User user = userMapper.toEntity(userCreateDTO);
         User savedUser = userRepository.save(user);
+        System.out.println("......");
+        System.out.println("User saved: " + savedUser);
+        System.out.println("......");
         return userMapper.toCreateDTO(savedUser);
     }
 
