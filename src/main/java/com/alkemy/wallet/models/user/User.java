@@ -48,7 +48,7 @@ public class User {
 
     // Relación uno a uno con la entidad Person
     @OneToOne
-    @JoinColumn(name = "id_person", referencedColumnName = "id_person")
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person", nullable = true)
     private Person person;
 
     //Relación con Account. Para ver las cuentas de un usuario
