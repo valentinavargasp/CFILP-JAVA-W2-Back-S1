@@ -21,7 +21,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
     
 
     @Operation(summary = "Obtener todos los usuarios")
