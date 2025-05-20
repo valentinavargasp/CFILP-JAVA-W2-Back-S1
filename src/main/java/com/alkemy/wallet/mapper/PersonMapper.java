@@ -3,6 +3,7 @@ package com.alkemy.wallet.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.alkemy.wallet.dto.PersonDTO;
 import com.alkemy.wallet.models.user.Person;
@@ -23,6 +24,7 @@ public interface PersonMapper {
     /**
      * Convierte un DTO a una entidad Person.
      */
+    @Mapping(target = "idPerson", ignore = true)
     Person toEntity(PersonDTO personDTO);
 
     /**
