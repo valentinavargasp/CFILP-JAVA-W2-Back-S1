@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alkemy.wallet.models.transaction.Transfer;
+import com.alkemy.wallet.dto.TransferDTO;
 import com.alkemy.wallet.services.transaction.TransferService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,14 +31,14 @@ public class TransferController {
     @Operation(summary = "Crear nueva transferencia")
     @ApiResponse(responseCode = "201", description = "Transferencia realizada correctamente")
     @PostMapping
-    public ResponseEntity<Transfer> createTransfer(@RequestBody Transfer transfer) {
-        return ResponseEntity.status(201).body(transferService.save(transfer));
+    public ResponseEntity<TransferDTO> createTransfer(@RequestBody TransferDTO transferDTO) {
+        return ResponseEntity.status(201).body(transferService.save(transferDTO));
     }
 
     @Operation(summary = "Buscar transferencias por cuenta de destino")
     @ApiResponse(responseCode = "200", description = "Transferencias encontradas")
     @GetMapping("/destination/{accountId}")
-    public ResponseEntity<List<Transfer>> getByDestinationAccountId(@PathVariable int accountId) {
+    public ResponseEntity<List<TransferDTO>> getByDestinationAccountId(@PathVariable int accountId) {
         return ResponseEntity.ok(transferService.getByDestinationAccountId(accountId));
     }
 }

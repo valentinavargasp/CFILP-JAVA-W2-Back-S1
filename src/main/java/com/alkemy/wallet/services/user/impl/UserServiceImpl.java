@@ -68,13 +68,5 @@ public class UserServiceImpl implements UserService {
     }
 
     
-    /**
-     * Guarda un nuevo usuario a partir de un DTO.
-     */
-    @Override
-    public UserDTO saveUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
-        User savedUser = userRepository.save(user);
-        return userMapper.toDTO(savedUser);
-    }
+ 
 }

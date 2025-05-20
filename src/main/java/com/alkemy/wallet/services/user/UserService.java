@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface UserService {
 
-    public UserDTO saveUser(UserDTO userDTO);
+    /**
+     * Guarda un nuevo usuario a partir de un DTO.
+     */
     public UserDTO getUserById(int id);
     public List<UserDTO> getAllUsers();
     public void deleteUserById(int id);

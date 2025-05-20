@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    
 
     @Operation(summary = "Obtener todos los usuarios")
     @ApiResponse(responseCode = "200", description = "Lista de usuarios")
@@ -39,14 +38,6 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
         UserDTO user = userService.getUserById(id); // Si el usuario no existe, se lanzará una excepción que será manejada por el GlobalExceptionHandler
         return ResponseEntity.ok(user); //si el usuario existe, se devuelve un 200 OK
-    }
-
-@Operation(summary = "Crear nuevo usuario")
-    @ApiResponse(responseCode = "201", description = "Usuario creado")
-    @PostMapping
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-        UserDTO savedUser = userService.saveUser(userDTO); //Si hay algún error de validación, lo manejará el GlobalExceptionHandler
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser); // Si todo va bien devuelve un 201 Created
     }
 
     @Operation(summary = "Actualizar un usuario por ID")
