@@ -41,6 +41,10 @@ public class UserController {
         return ResponseEntity.ok(user); //si el usuario existe, se devuelve un 200 OK
     }
 
+
+
+    //TODO: para crear un usuario, se debería validar que el nombre no este en uso y que tenga una contraseña no nula. Para esto se recomienda el uso de otro DTO, UserCreateDTO
+    
     @Operation(summary = "Crear nuevo usuario")
     @ApiResponse(responseCode = "201", description = "Usuario creado")
     @PostMapping
