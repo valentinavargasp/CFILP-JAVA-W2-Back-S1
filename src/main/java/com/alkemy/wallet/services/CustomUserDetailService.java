@@ -25,12 +25,12 @@ public class CustomUserDetailService implements UserDetailsService {
 
     //todo: loadUserByUsername deberia ser ByEmail, o podriamos crear un userName en User
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("El email no puede ser nulo o vacío");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("El usuario no puede ser nulo o vacío");
         }
 
-        com.alkemy.wallet.models.user.User user = userRepo.findByEmail(email)
+        com.alkemy.wallet.models.user.User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciales inválidas"));
 
         List<GrantedAuthority> authorities = user.getUserRoles() != null ?
@@ -41,10 +41,10 @@ public class CustomUserDetailService implements UserDetailsService {
                 Collections.emptyList();
 
         System.out.println("CustomDetailService:");
-        System.out.println("Cargando el usuario: " + user.getEmail() + " con roles: " + authorities.toString());
+        System.out.println("Cargando el usuario: " + user.getUsername() + " con roles: " + authorities.toString());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 authorities
         );
