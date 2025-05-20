@@ -1,7 +1,0 @@
-
-
-
-En dto, tendriamos que poner los Data Transfer Objet, y en  lugar de enviar todos los datos del entity poner solo lo que nos interesa.
-
-Es medio repetitivo pero sigue el principio SOLID, Entity solo queda como representación de la DB y  si en algun momento se modifica, al tener el DTO no se pierden los endpoints
-
