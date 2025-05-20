@@ -76,20 +76,22 @@ public class WithdrawalServiceImpl implements WithdrawalService {
      * 4. Finalmente, guardamos la transacción.
      */
     @Override
-    public WithdrawalDTO save(Withdrawal withdrawal) {
-        Account account = accountRepository.findById(withdrawal.getAccount().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawal.getAccount().getId()));
+    public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
+    Withdrawal withdrawal = withdrawalMapper.toEntity(withdrawalDTO);
 
-        double monto = withdrawal.getTransactionAmount();
+    Account account = accountRepository.findById(withdrawal.getAccount().getId())
+            .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawal.getAccount().getId()));
 
-        if (account.getBalance() < monto) {
-            throw new IllegalArgumentException("Saldo insuficiente para retirar");
-        }
+    double monto = withdrawal.getTransactionAmount();
 
-        account.setBalance(account.getBalance() - monto);
-        accountRepository.save(account);
+    if (account.getBalance() < monto) {
+        throw new IllegalArgumentException("Saldo insuficiente para retirar");
+    }
 
-        return withdrawalMapper.toDto(withdrawalRepository.save(withdrawal));
+    account.setBalance(account.getBalance() - monto);
+    accountRepository.save(account);
+
+    return withdrawalMapper.toDto(withdrawalRepository.save(withdrawal));
     }
 
 }
