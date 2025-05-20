@@ -16,4 +16,7 @@ public interface DepositMapper {
     @Mapping(target = "account", ignore = true) // se setea manualmente en el servicio
     @Mapping(source = "method", target = "method")
     Deposit toEntity(DepositDTO dto);
+
+    @Mapping(source = "account.id", target = "accountId")
+    DepositDTO toDTO(Deposit savedDeposit);
 }

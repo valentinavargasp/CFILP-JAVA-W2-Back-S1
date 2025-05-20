@@ -11,9 +11,11 @@ public interface TransferMapper {
 
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "destinationAccount.id", target = "destinationAccountId")
+    
     TransferDTO toDto(Transfer transfer);
 
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "destinationAccount", ignore = true)
     Transfer toEntity(TransferDTO dto);
+
 }
