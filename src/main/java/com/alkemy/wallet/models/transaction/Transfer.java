@@ -1,5 +1,7 @@
 package com.alkemy.wallet.models.transaction;
 
+import java.time.LocalDateTime;
+
 import com.alkemy.wallet.models.account.Account;
 
 import jakarta.persistence.*;
@@ -16,8 +18,22 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "transfer")
-@PrimaryKeyJoinColumn(name = "id_transaction") // clave heredada de Transaction
-public class Transfer extends Transaction {
+public class Transfer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_transfer")
+    private int id;
+
+    @Column(name = "transaction_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime transactionDate = LocalDateTime.now();
+
+    @Column(name = "transaction_amount")
+    private double transactionAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "id_account", referencedColumnName = "id_account")
+    private Account account;
 
     @ManyToOne
     @JoinColumn(name = "destination_account_id", referencedColumnName = "id_account")

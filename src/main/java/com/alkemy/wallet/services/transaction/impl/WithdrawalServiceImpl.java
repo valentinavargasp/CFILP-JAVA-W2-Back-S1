@@ -2,9 +2,10 @@ package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alkemy.wallet.dto.WithdrawalDTO;
+import com.alkemy.wallet.mapper.WithdrawalMapper;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
 import com.alkemy.wallet.models.transaction.Withdrawal;
@@ -13,40 +14,37 @@ import com.alkemy.wallet.repository.transaction.WithdrawalRepository;
 import com.alkemy.wallet.services.transaction.WithdrawalService;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> implements WithdrawalService {
+@RequiredArgsConstructor
+public class WithdrawalServiceImpl implements WithdrawalService {
 
-    @Autowired
-    private AccountRepository accountRepository;
-
+    private final AccountRepository accountRepository;
     private final WithdrawalRepository withdrawalRepository;
+    private final WithdrawalMapper withdrawalMapper;
 
-    public WithdrawalServiceImpl(WithdrawalRepository withdrawalRepository) {
-        super(withdrawalRepository); // hereda los métodos comunes
-        this.withdrawalRepository = withdrawalRepository;
-    }
 
     // Método para obtener los retiros por sucursal
     @Override
-    public List<Withdrawal> getByBranch(String branch) {
+    public List<WithdrawalDTO> getByBranch(String branch) {
         List<Withdrawal> result = withdrawalRepository.findByBranch(branch);
         if (result.isEmpty()) {
             throw new EntityNotFoundException("No se encontraron retiros en la sucursal: " + branch);
         }
-        return result;
+        return withdrawalMapper.toDtoList(result);
     }
 
     // Método para obtener retiros por método
     @Override
-    public List<Withdrawal> getByMethod(String method) {
+    public List<WithdrawalDTO> getByMethod(String method) {
         try {
             TransactionMethodEnum methodEnum = TransactionMethodEnum.valueOf(method.toUpperCase());
             List<Withdrawal> result = withdrawalRepository.findByMethod(methodEnum);
             if (result.isEmpty()) {
                 throw new EntityNotFoundException("No se encontraron retiros con el método: " + method);
             }
-            return result;
+            return withdrawalMapper.toDtoList(result);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Método de retiro inválido: " + method);
         }
@@ -58,7 +56,7 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
     // y que TransactionService es una interfaz genérica que maneja transacciones
     // en general, no solo retiros.
     @Override
-    public List<Withdrawal> getByUserId(int userId) {
+    public List<WithdrawalDTO> getByUserId(int userId) {
         List<Withdrawal> withdrawals = withdrawalRepository.findAll().stream()
                 .filter(w -> w.getAccount().getUser().getId() == userId)
                 .toList();
@@ -67,7 +65,7 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
             throw new EntityNotFoundException("No se encontraron retiros para el usuario con ID: " + userId);
         }
 
-        return withdrawals;
+        return withdrawalMapper.toDtoList(withdrawals);
     }
 
     /**
@@ -78,21 +76,22 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
      * 4. Finalmente, guardamos la transacción.
      */
     @Override
-    public Withdrawal save(Withdrawal withdrawal) {
-        Account account = withdrawal.getAccount(); // Cuenta desde donde se retira
-        double monto = withdrawal.getTransactionAmount();
+    public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
+    Withdrawal withdrawal = withdrawalMapper.toEntity(withdrawalDTO);
 
-        Account cuenta = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + account.getId()));
+    Account account = accountRepository.findById(withdrawal.getAccount().getId())
+            .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawal.getAccount().getId()));
 
-        if (cuenta.getBalance() < monto) {
-            throw new IllegalArgumentException("Saldo insuficiente para retirar");
-        }
+    double monto = withdrawal.getTransactionAmount();
 
-        cuenta.setBalance(cuenta.getBalance() - monto);
-        accountRepository.save(cuenta);
+    if (account.getBalance() < monto) {
+        throw new IllegalArgumentException("Saldo insuficiente para retirar");
+    }
 
-        return super.save(withdrawal);
+    account.setBalance(account.getBalance() - monto);
+    accountRepository.save(account);
+
+    return withdrawalMapper.toDto(withdrawalRepository.save(withdrawal));
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alkemy.wallet.models.transaction.Deposit;
+import com.alkemy.wallet.dto.DepositDTO;
 import com.alkemy.wallet.services.transaction.DepositService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,21 +31,21 @@ public class DepositController {
     @Operation(summary = "Realizar un depósito")
     @ApiResponse(responseCode = "201", description = "Depósito realizado exitosamente")
     @PostMapping
-    public ResponseEntity<Deposit> createDeposit(@RequestBody Deposit deposit) {
-        return ResponseEntity.status(201).body(depositService.save(deposit));
+    public ResponseEntity<DepositDTO> createDeposit(@RequestBody DepositDTO depositDTO) {
+        return ResponseEntity.status(201).body(depositService.save(depositDTO));
     }
 
     @Operation(summary = "Buscar depósitos por entidad de origen")
     @ApiResponse(responseCode = "200", description = "Depósitos encontrados")
     @GetMapping("/entity/{entity}")
-    public ResponseEntity<List<Deposit>> getBySourceEntity(@PathVariable String entity) {
+    public ResponseEntity<List<DepositDTO>> getBySourceEntity(@PathVariable String entity) {
         return ResponseEntity.ok(depositService.getBySourceEntity(entity));
     }
 
     @Operation(summary = "Buscar depósitos por método")
     @ApiResponse(responseCode = "200", description = "Depósitos encontrados")
     @GetMapping("/method/{method}")
-    public ResponseEntity<List<Deposit>> getByMethod(@PathVariable String method) {
+    public ResponseEntity<List<DepositDTO>> getByMethod(@PathVariable String method) {
         return ResponseEntity.ok(depositService.getByMethod(method));
     }
 }
