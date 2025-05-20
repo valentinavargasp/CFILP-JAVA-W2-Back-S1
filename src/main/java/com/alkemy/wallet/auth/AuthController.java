@@ -27,13 +27,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
+        System.out.println("login exitoso del usuario: " + authRequest.getUsername());
 
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String token = jwtService.generateToken(userDetails);
-
-        System.out.println("login exitoso del usuario: " + userDetails.getUsername() + " con token: " + token );
 
         return ResponseEntity.ok(new AuthResponse(token));
     }

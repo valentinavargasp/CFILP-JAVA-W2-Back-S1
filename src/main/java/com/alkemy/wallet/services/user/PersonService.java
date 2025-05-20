@@ -1,24 +1,32 @@
 package com.alkemy.wallet.services.user;
 
-import com.alkemy.wallet.models.user.Person;
+import com.alkemy.wallet.dto.PersonDTO;
 import java.util.List;
-
 
 public interface PersonService {
 
+    public PersonDTO savePerson(PersonDTO personDTO); // guarda
 
-    public Person savePerson(Person person);  //guarda
-    public Person editPerson(int id, Person person);  //edita
-    public void deletePersonById(int id);  //elimina
-    public Person findPersonById(int id);
-    public Person findPersonByName(String name);
-    public Person findPersonByLastName(String lastName);
-    public Person findPersonByPhoneNumber(String phoneNumber);
-    List<Person> findPersonsByLocation(String location);
-    public Person findPersonByAddress(String address);
-    public Person findPersonByIdentityCard(int identityCard);
-    public Person findPersonByDateBirth(String dateBirth);
-    public List<Person> getAllPersons();  // NUEVO: método para listar todas las personas
+    public PersonDTO editPerson(int id, PersonDTO personDTO); // edita
 
+    public void deletePersonById(int id); // elimina
+
+    public PersonDTO findPersonById(int id);
+
+    public PersonDTO findPersonByName(String name);
+
+    public PersonDTO findPersonByLastName(String lastName);
+
+    public PersonDTO findPersonByPhoneNumber(String phoneNumber);
+
+    List<PersonDTO> findPersonsByLocation(String location);
+
+    public PersonDTO findPersonByAddress(String address);
+
+    public PersonDTO findPersonByIdentityCard(int identityCard);
+
+    public PersonDTO findPersonByDateBirth(String dateBirth);
+
+    public List<PersonDTO> getAllPersons(); // NUEVO: método para listar todas las personas
 
 }

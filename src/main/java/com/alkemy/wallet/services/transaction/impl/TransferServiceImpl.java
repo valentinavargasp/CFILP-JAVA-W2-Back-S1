@@ -55,7 +55,6 @@ public class TransferServiceImpl extends TransactionServiceImpl<Transfer> implem
         return transfers;
     }
 
-    // TODO: TRANSFERIR TIENE QUE ACtUALIZAR EL SALDO EN LAS CUENTAS DE LA
     /*
      * Al guardar una transferencia:
      * 1. Se busca la cuenta origen y la cuenta destino.

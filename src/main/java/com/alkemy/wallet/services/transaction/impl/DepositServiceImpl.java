@@ -77,8 +77,6 @@ public class DepositServiceImpl extends TransactionServiceImpl<Deposit> implemen
         return deposits;
     }
 
-    // TODO: DEPOSITAR TIENE QUE ACTUALIZAR EL SALDO EN ACCOUNT
-
     @Override
     public Deposit save(Deposit deposit) {
         Account account = deposit.getAccount();

@@ -19,7 +19,7 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
 
     @Autowired
     private AccountRepository accountRepository;
-    
+
     private final WithdrawalRepository withdrawalRepository;
 
     public WithdrawalServiceImpl(WithdrawalRepository withdrawalRepository) {
@@ -27,7 +27,7 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
         this.withdrawalRepository = withdrawalRepository;
     }
 
-    //Método para obtener los retiros por sucursal
+    // Método para obtener los retiros por sucursal
     @Override
     public List<Withdrawal> getByBranch(String branch) {
         List<Withdrawal> result = withdrawalRepository.findByBranch(branch);
@@ -37,7 +37,7 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
         return result;
     }
 
-    //Método para obtener retiros por método
+    // Método para obtener retiros por método
     @Override
     public List<Withdrawal> getByMethod(String method) {
         try {
@@ -52,8 +52,9 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
         }
     }
 
-    //Método para obtener retiros por ID de usuario
-    // Se asume que el método getByUserId está definido en la interfaz TransactionService
+    // Método para obtener retiros por ID de usuario
+    // Se asume que el método getByUserId está definido en la interfaz
+    // TransactionService
     // y que TransactionService es una interfaz genérica que maneja transacciones
     // en general, no solo retiros.
     @Override
@@ -69,9 +70,6 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
         return withdrawals;
     }
 
-
-    //TODO: RETIRAR TIENE QEU ACTUALIZAR EL SALDO DE LA CUENTA ASOCIADA
-
     /**
      * Al guardar un retiro:
      * 1. Buscamos la cuenta origen.
@@ -80,22 +78,21 @@ public class WithdrawalServiceImpl extends TransactionServiceImpl<Withdrawal> im
      * 4. Finalmente, guardamos la transacción.
      */
     @Override
-public Withdrawal save(Withdrawal withdrawal) {
-    Account account = withdrawal.getAccount(); //Cuenta desde donde se retira
-    double monto = withdrawal.getTransactionAmount();
+    public Withdrawal save(Withdrawal withdrawal) {
+        Account account = withdrawal.getAccount(); // Cuenta desde donde se retira
+        double monto = withdrawal.getTransactionAmount();
 
-    Account cuenta = accountRepository.findById(account.getId())
-        .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + account.getId()));
+        Account cuenta = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + account.getId()));
 
-    if (cuenta.getBalance() < monto) {
-        throw new IllegalArgumentException("Saldo insuficiente para retirar");
+        if (cuenta.getBalance() < monto) {
+            throw new IllegalArgumentException("Saldo insuficiente para retirar");
+        }
+
+        cuenta.setBalance(cuenta.getBalance() - monto);
+        accountRepository.save(cuenta);
+
+        return super.save(withdrawal);
     }
-
-    cuenta.setBalance(cuenta.getBalance() - monto);
-    accountRepository.save(cuenta);
-
-    return super.save(withdrawal);
-}
-
 
 }
