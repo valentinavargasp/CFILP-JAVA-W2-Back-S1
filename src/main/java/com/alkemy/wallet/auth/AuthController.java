@@ -29,11 +29,10 @@ public class AuthController {
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
+        System.out.println("login exitoso del usuario: " + authRequest.getUsername());
 
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String token = jwtService.generateToken(userDetails);
-
-        System.out.println("login exitoso del usuario: " + userDetails.getUsername() + " con token: " + token );
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
