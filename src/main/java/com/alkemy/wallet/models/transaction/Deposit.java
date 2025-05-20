@@ -1,5 +1,9 @@
 package com.alkemy.wallet.models.transaction;
 
+import java.time.LocalDateTime;
+
+import com.alkemy.wallet.models.account.Account;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +18,22 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "deposit")
-@PrimaryKeyJoinColumn(name = "id_transaction") // clave heredada de Transaction
-public class Deposit extends Transaction {
+public class Deposit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_deposit")
+    private int id;
+
+    @Column(name = "transaction_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime transactionDate = LocalDateTime.now();
+
+    @Column(name = "transaction_amount")
+    private double transactionAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "id_account", referencedColumnName = "id_account")
+    private Account account;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "method")
