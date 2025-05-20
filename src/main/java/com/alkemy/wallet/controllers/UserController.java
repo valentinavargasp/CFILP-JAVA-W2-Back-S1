@@ -42,19 +42,6 @@ public class UserController {
         return ResponseEntity.ok(user); //si el usuario existe, se devuelve un 200 OK
     }
 
-
-
-    //UserCreateDTO es un DTO que contiene solo los campos necesarios para crear un usuario
-    //En este caso, solo el username y el password. El resto de los campos se rellenan automáticamente
-    
-    @Operation(summary = "Crear nuevo usuario")
-    @ApiResponse(responseCode = "201", description = "Usuario creado")
-    @PostMapping
-    public ResponseEntity<UserCreateDTO> saveUser(@RequestBody UserCreateDTO userCreateDTO) {
-        UserCreateDTO savedUser = userCreateService.saveUser(userCreateDTO); //Si hay algún error de validación, lo manejará el GlobalExceptionHandler
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser); // Si todo va bien devuelve un 201 Created
-    }
-
     @Operation(summary = "Actualizar un usuario por ID")
     @ApiResponse(responseCode = "200", description = "Usuario actualizado")
     @PutMapping("/{id}")
