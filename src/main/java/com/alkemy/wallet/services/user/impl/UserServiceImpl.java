@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
      * Obtiene un usuario por su ID.
      */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional()
     public UserDTO getUserById(int id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findByIdWithRelations(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
         
         // Evita la carga perezosa de roles y cuentas
@@ -73,6 +73,8 @@ public class UserServiceImpl implements UserService {
         user.getUserRoles().forEach(role -> role.getRole().getRoleName()); // fuerza carga completa
         user.getAccounts().size(); 
         
+        System.out.println("USERSERVICE: ");
+        System.out.println("User: " + user.getUsername());
 
         return userMapper.toDTO(user);
     }

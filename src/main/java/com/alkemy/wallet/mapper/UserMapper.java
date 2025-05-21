@@ -19,7 +19,7 @@ public interface UserMapper {
 
     // Mapea User -> UserDTO (incluye también el Person mapeado automáticamente)
     @Mapping(target = "person", source = "person")
-    @Mapping(target = "role", expression = "java(user.getUserRoles() != null && !user.getUserRoles().isEmpty() ? user.getUserRoles().iterator().next().getRole().getRoleName() : \"Sin rol\")")
+    //@Mapping(target = "role", expression = "java(user.getUserRoles() != null && !user.getUserRoles().isEmpty() ? user.getUserRoles().iterator().next().getRole().getRoleName() : \"Sin rol\")")
     UserDTO toDTO(User user);
 
     // Mapea UserDTO -> User (incluye también el Person mapeado automáticamente)

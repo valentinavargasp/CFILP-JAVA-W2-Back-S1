@@ -33,7 +33,7 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new IllegalArgumentException("El usuario no puede ser nulo o vacío");
         }
 
-        com.alkemy.wallet.models.user.User user = userRepo.findByUsername(username)
+        com.alkemy.wallet.models.user.User user = userRepo.findByUsernameWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciales inválidas"));
 
         List<GrantedAuthority> authorities = user.getUserRoles() != null ? user.getUserRoles().stream()

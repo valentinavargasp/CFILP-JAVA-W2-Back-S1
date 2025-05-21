@@ -11,7 +11,6 @@ public class UserDTO {
 
     private int id;
     private String username;
-    private String role;
     private PersonDTO person;
 
     public int getId() {
@@ -30,12 +29,6 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+ 
 
 }

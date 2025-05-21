@@ -4,6 +4,9 @@ package com.alkemy.wallet.models.user;
 
 
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.context.annotation.Lazy;
 
 import com.alkemy.wallet.models.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,11 +57,12 @@ public class User {
     //Relación con Account. Para ver las cuentas de un usuario
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<Account> accounts;
+    private Set<Account> accounts;
 
     // Relación con UserRole. Para ver los roles de un usuario
     @OneToMany(mappedBy = "user")
+    @Lazy(value = false)
     @JsonIgnore
-    private List<UserRole> userRoles;
+    private Set<UserRole> userRoles;
 
 }
