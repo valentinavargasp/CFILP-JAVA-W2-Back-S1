@@ -62,9 +62,6 @@ public class Account {
         this.currency = currency;
     }
 
-/*reemplace accountType.getAccontType por accountType, el valor se obtiene al instanciar el objeto creo, esto me tira error en intelliJ"
-
- */
     @Override
     public String toString() {
         return "Account [id=" + id + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
