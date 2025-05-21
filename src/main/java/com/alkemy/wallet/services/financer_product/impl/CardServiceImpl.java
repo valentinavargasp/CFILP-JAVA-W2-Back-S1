@@ -1,14 +1,17 @@
 package com.alkemy.wallet.services.financer_product.impl;
 
 import com.alkemy.wallet.models.financer_product.Card;
+import com.alkemy.wallet.models.financer_product.DebitCard;
 import com.alkemy.wallet.services.financer_product.CardService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+@Service
 public abstract class CardServiceImpl<T extends Card> extends FinancerProductServiceImpl<T> implements CardService<T> {
 
 
@@ -34,18 +37,21 @@ public abstract class CardServiceImpl<T extends Card> extends FinancerProductSer
     }
 
     @Override
-    public T getByExpirationDate(String expirationDate) {
+    public List<DebitCard> getByExpirationDate(String expirationDate) {
         if (expirationDate == null || expirationDate.trim().isEmpty()) {
             throw new IllegalArgumentException("La fecha no puede estar vacía.");
         }
-        
+
         try {
             LocalDate parsedDate = LocalDate.parse(expirationDate);
-            return repository.findAll().stream()
+            List<T> cards = repository.findAll().stream()
                 .filter(card -> card.getExpirationDate().equals(parsedDate))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(
-                    "No se encontró la Tarjeta con la fecha de expiración: " + expirationDate));
+                .toList();
+            if (cards.isEmpty()) {
+                throw new EntityNotFoundException(
+                    "No se encontraron Tarjetas con la fecha de expiración: " + expirationDate);
+            }
+            return (List<DebitCard>) cards;
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Formato de fecha inválido: " + expirationDate, e);
         } catch (Exception e) {

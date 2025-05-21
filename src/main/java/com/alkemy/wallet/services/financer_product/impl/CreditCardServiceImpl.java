@@ -1,9 +1,9 @@
 package com.alkemy.wallet.services.financer_product.impl;
 
 import com.alkemy.wallet.models.financer_product.CreditCard;
+import com.alkemy.wallet.models.financer_product.DebitCard;
 import com.alkemy.wallet.repository.financer_product.CreditCardRepository;
 import com.alkemy.wallet.services.financer_product.CreditCardService;
-import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard getByExpirationDate(String expirationDate) {
+    public List<DebitCard> getByExpirationDate(String expirationDate) {
         return null;
     }
 
