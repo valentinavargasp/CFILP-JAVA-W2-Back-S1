@@ -1,6 +1,8 @@
 package com.alkemy.wallet.services;
 
 import com.alkemy.wallet.repository.user.UserRepository;
+import com.alkemy.wallet.utils.ColorLogger;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +25,8 @@ public class CustomUserDetailService implements UserDetailsService {
         this.userRepo = Objects.requireNonNull(userRepo, "UserRepository no puede ser nulo");
     }
 
-    //todo: loadUserByUsername deberia ser ByEmail, o podriamos crear un userName en User
+    // todo: loadUserByUsername deberia ser ByEmail, o podriamos crear un userName
+    // en User
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().isEmpty()) {
@@ -33,20 +36,17 @@ public class CustomUserDetailService implements UserDetailsService {
         com.alkemy.wallet.models.user.User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciales inválidas"));
 
-        List<GrantedAuthority> authorities = user.getUserRoles() != null ?
-                user.getUserRoles().stream()
-                        .filter(Objects::nonNull)
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().getRoleName()))
-                        .collect(Collectors.toList()) :
-                Collections.emptyList();
+        List<GrantedAuthority> authorities = user.getUserRoles() != null ? user.getUserRoles().stream()
+                .filter(Objects::nonNull)
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().getRoleName()))
+                .collect(Collectors.toList()) : Collections.emptyList();
 
-        System.out.println("CustomDetailService:");
-        System.out.println("Cargando el usuario: " + user.getUsername() + " con roles: " + authorities.toString());
+        ColorLogger.green("CustomDetailService:");
+        ColorLogger.green("Cargando el usuario: " + user.getUsername() + " con roles: " + authorities.toString());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                authorities
-        );
+                authorities);
     }
 }
