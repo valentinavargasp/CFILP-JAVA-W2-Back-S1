@@ -1,5 +1,7 @@
 package com.alkemy.wallet.services.user.impl;
 
+
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +57,7 @@ public class UserCreateServiceImpl implements UserCreateService {
             System.out.println("Se guardo el usuario: " + savedUser);
             //Se guarda el rol del usuario
             //EL id 6 es el id del rol de usuario "CLIENTE"
-            Role role = roleRepository.findById(6).orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+            Role role = roleRepository.findById(5).orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
             userRoleRepository.save(new UserRole(savedUser, role));
 
             //Se guarda el usuario con el rol   
