@@ -54,23 +54,18 @@ public class UserCreateServiceImpl implements UserCreateService {
             user.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
             User savedUser = userRepository.save(user);
 
-            System.out.println("Se guardo la persona: " + person);
             System.out.println("Se guardo el usuario: " + savedUser);
             //Se guarda el rol del usuario
             //EL id 6 es el id del rol de usuario "CLIENTE"
             Role role = roleRepository.findById(6).orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
-            System.out.println("ROL:" + role);
-            UserRole userRole = userRoleRepository.save(new UserRole(savedUser, role));
-            System.out.println("Se guardo el rol: " + userRole);
-            
-            //Se guarda el usuario con el rol
-            savedUser.setUserRoles(List.of(userRole));
+            userRoleRepository.save(new UserRole(savedUser, role));
+
+            //Se guarda el usuario con el rol   
+            //Las lineas 64 a 69 se puedeneliminar cuando funcione        
+            User savedUserWithRole = userRepository.getReferenceById(savedUser.getId());
             System.out.println("----------------------------------");
-            System.out.println("Se guardo el usuario con el rol: " + savedUser);
-            savedUser = userRepository.save(savedUser);
-
-
-            System.out.println("Se guardo el usuario: " + savedUser);    
+            System.out.println("Se guardo el usuario con el rol: " + savedUserWithRole);
+            System.out.println("----------------------------------");
             
             return userMapper.toCreateDTO(savedUser);
         } catch (Exception e) {
