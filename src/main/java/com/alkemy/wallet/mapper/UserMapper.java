@@ -17,6 +17,7 @@ import com.alkemy.wallet.models.user.User;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
+    @Mapping(target = "role", expression = "java(user.getUserRoles() != null && !user.getUserRoles().isEmpty() ? user.getUserRoles().get(0).getRole().getRoleName() : \"Sin rol\")")
     UserDTO toDTO(User user);
 
     // Mapea UserDTO -> User (incluye también el Person mapeado automáticamente)
