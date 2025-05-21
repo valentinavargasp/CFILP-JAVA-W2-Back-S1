@@ -16,7 +16,7 @@ import com.alkemy.wallet.repository.user.UserRepository;
 public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     /**
      * Devuelve todos los usuarios como DTOs.
@@ -68,5 +68,5 @@ public class UserServiceImpl implements UserService {
     }
 
     
- 
+
 }
