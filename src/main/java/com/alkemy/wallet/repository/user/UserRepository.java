@@ -1,5 +1,6 @@
 package com.alkemy.wallet.repository.user;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.alkemy.wallet.models.user.User;
@@ -8,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+    @EntityGraph(attributePaths = {"userRoles.role", "accounts"})// Carga los roles y cuentas del usuario
+    Optional<User> findById(int id);
 
     List<User> findByUserRoles_Role_RoleName(String role); //
 

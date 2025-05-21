@@ -70,10 +70,10 @@ public class UserServiceImpl implements UserService {
         
         // Evita la carga perezosa de roles y cuentas
         // para evitar problemas de LazyInitializationException
-        user.getUserRoles().size();
-        user.getAccounts().size();
-
+        user.getUserRoles().forEach(role -> role.getRole().getRoleName()); // fuerza carga completa
+        user.getAccounts().size(); 
         
+
         return userMapper.toDTO(user);
     }
 
