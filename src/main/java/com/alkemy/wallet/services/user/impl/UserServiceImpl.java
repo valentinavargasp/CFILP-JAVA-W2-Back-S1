@@ -6,6 +6,8 @@ import com.alkemy.wallet.services.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alkemy.wallet.dto.UserDTO;
 import com.alkemy.wallet.mapper.UserMapper;
 import com.alkemy.wallet.models.user.User;
@@ -61,9 +63,17 @@ public class UserServiceImpl implements UserService {
      * Obtiene un usuario por su ID.
      */
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUserById(int id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
+        
+        // Evita la carga perezosa de roles y cuentas
+        // para evitar problemas de LazyInitializationException
+        user.getUserRoles().size();
+        user.getAccounts().size();
+
+        
         return userMapper.toDTO(user);
     }
 
