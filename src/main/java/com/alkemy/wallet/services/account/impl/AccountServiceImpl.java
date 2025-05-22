@@ -1,5 +1,7 @@
 package com.alkemy.wallet.services.account.impl;
 
+import com.alkemy.wallet.dto.AccountDTO;
+import com.alkemy.wallet.mapper.AccountMapper;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.account.AccountType;
 import com.alkemy.wallet.models.financer_product.FinancerProduct;
@@ -11,6 +13,8 @@ import com.alkemy.wallet.repository.financer_product.FinancerProductRepository;
 import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.services.account.AccountService;
+
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -32,11 +36,18 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private FinancerProductRepository financerProductRepository;
 
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Override
-    public Account getAccountById(int id) {
-        return accountRepository.findById(id).orElse(null);
-    }
+    @Transactional
+    public AccountDTO getAccountById(int id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada con id " + id));
+           
+           System.out.println("Account: " + account);
+                return accountMapper.toDTO(account);
+        }
 
     @Override
     public Account editAccount(int id, Account newAccountData) {

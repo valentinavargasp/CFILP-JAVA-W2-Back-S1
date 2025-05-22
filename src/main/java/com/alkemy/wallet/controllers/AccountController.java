@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.alkemy.wallet.dto.AccountDTO;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.financer_product.FinancerProduct;
 import com.alkemy.wallet.models.transaction.Transaction;
@@ -42,8 +43,9 @@ public class AccountController {
     @Operation(summary = "Obtener cuenta por ID")
     @ApiResponse(responseCode = "200", description = "Cuenta encontrada")
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable int id) {
-        Account account = accountService.getAccountById(id);
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable int id) {
+         System.out.println("llamada desde account controller");
+        AccountDTO account = accountService.getAccountById(id);
         return ResponseEntity.ok(account);
     }
 
