@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alkemy.wallet.models.transaction.Withdrawal;
+import com.alkemy.wallet.dto.WithdrawalDTO;
 import com.alkemy.wallet.services.transaction.WithdrawalService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,21 +31,21 @@ public class WithdrawalController {
     @Operation(summary = "Realizar un retiro")
     @ApiResponse(responseCode = "201", description = "Retiro realizado exitosamente")
     @PostMapping
-    public ResponseEntity<Withdrawal> createWithdrawal(@RequestBody Withdrawal withdrawal) {
-        return ResponseEntity.status(201).body(withdrawalService.save(withdrawal));
+    public ResponseEntity<WithdrawalDTO> createWithdrawal(@RequestBody WithdrawalDTO withdrawalDTO) {
+        return ResponseEntity.status(201).body(withdrawalService.save(withdrawalDTO));
     }
 
     @Operation(summary = "Buscar retiros por sucursal")
     @ApiResponse(responseCode = "200", description = "Retiros encontrados")
     @GetMapping("/branch/{branch}")
-    public ResponseEntity<List<Withdrawal>> getByBranch(@PathVariable String branch) {
+    public ResponseEntity<List<WithdrawalDTO>> getByBranch(@PathVariable String branch) {
         return ResponseEntity.ok(withdrawalService.getByBranch(branch));
     }
 
     @Operation(summary = "Buscar retiros por método")
     @ApiResponse(responseCode = "200", description = "Retiros encontrados")
     @GetMapping("/method/{method}")
-    public ResponseEntity<List<Withdrawal>> getByMethod(@PathVariable String method) {
+    public ResponseEntity<List<WithdrawalDTO>> getByMethod(@PathVariable String method) {
         return ResponseEntity.ok(withdrawalService.getByMethod(method));
     }
 }

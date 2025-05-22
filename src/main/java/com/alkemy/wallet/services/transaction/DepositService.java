@@ -2,13 +2,15 @@ package com.alkemy.wallet.services.transaction;
 
 import java.util.List;
 
+import com.alkemy.wallet.dto.DepositDTO;
 
 
-import com.alkemy.wallet.models.transaction.Deposit;
+public interface DepositService { // Extiende de TransactionService
+    public List<DepositDTO> getByMethod(String method); // Ejemplo de método específico
 
+    public List<DepositDTO> getBySourceEntity(String entity); // Lista de depósitos por entidad de origen
 
-public interface DepositService extends TransactionService<Deposit> { // Extiende de TransactionService
-    public List<Deposit> getByMethod(String method); // Ejemplo de método específico
+    List<DepositDTO> getByUserId(int userId);   
 
-    public List<Deposit> getBySourceEntity(String entity); // Lista de depósitos por entidad de origen
+    DepositDTO save(DepositDTO depositDTO);     
 }

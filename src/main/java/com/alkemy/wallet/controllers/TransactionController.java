@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alkemy.wallet.dto.TransactionDTO;
 import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.services.transaction.TransactionService;
 
@@ -32,7 +33,7 @@ public class TransactionController {
     @Operation(summary = "Listar todas las transacciones")
     @ApiResponse(responseCode = "200", description = "Listado completo de transacciones")
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAll() {
+    public ResponseEntity<List<TransactionDTO>> getAll() {
         return ResponseEntity.ok(transactionService.getAll());
     }
 
@@ -42,14 +43,14 @@ public class TransactionController {
         @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para ese usuario")
     })
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Transaction>> getByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<TransactionDTO>> getByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(transactionService.getByUserId(userId));
     }
 
     @Operation(summary = "Buscar transacciones por fecha")
     @ApiResponse(responseCode = "200", description = "Transacciones filtradas por fecha")
     @GetMapping("/date/{date}")
-    public ResponseEntity<List<Transaction>> getByDate(@PathVariable String date) {
+    public ResponseEntity<List<TransactionDTO>> getByDate(@PathVariable String date) {
         return ResponseEntity.ok(transactionService.getByDate(LocalDate.parse(date)));
     }
 }

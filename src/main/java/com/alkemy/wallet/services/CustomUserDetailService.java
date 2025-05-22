@@ -1,6 +1,7 @@
 package com.alkemy.wallet.services;
 
 import com.alkemy.wallet.repository.user.UserRepository;
+import com.alkemy.wallet.utils.ColorLogger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,31 +23,34 @@ public class CustomUserDetailService implements UserDetailsService {
     public CustomUserDetailService(UserRepository userRepo) {
         this.userRepo = Objects.requireNonNull(userRepo, "UserRepository no puede ser nulo");
     }
-
-    //todo: loadUserByUsername deberia ser ByEmail, o podriamos crear un userName en User
+    
+    /**
+     * Carga un usuario por su nombre de usuario y asigna los roles correspondientes
+     *
+     * @param username el nombre de usuario a buscar
+     * @return UserDetails con la información del usuario y sus roles
+     * @throws UsernameNotFoundException si el usuario no se encuentra
+     */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("El email no puede ser nulo o vacío");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("El usuario no puede ser nulo o vacío");
         }
 
-        com.alkemy.wallet.models.user.User user = userRepo.findByEmail(email)
+        com.alkemy.wallet.models.user.User user = userRepo.findByUsernameWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciales inválidas"));
 
-        List<GrantedAuthority> authorities = user.getUserRoles() != null ?
-                user.getUserRoles().stream()
-                        .filter(Objects::nonNull)
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().getRoleName()))
-                        .collect(Collectors.toList()) :
-                Collections.emptyList();
+        List<GrantedAuthority> authorities = user.getUserRoles() != null ? user.getUserRoles().stream()
+                .filter(Objects::nonNull)
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().getRoleName()))
+                .collect(Collectors.toList()) : Collections.emptyList();
 
-        System.out.println("CustomDetailService:");
-        System.out.println("Cargando el usuario: " + user.getEmail() + " con roles: " + authorities.toString());
+        ColorLogger.green("CustomDetailService:");
+        ColorLogger.green("Cargando el usuario: " + user.getUsername() + " con roles: " + authorities.toString());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
+                user.getUsername(),
+                user.getPassword(),               
+                authorities);
     }
 }

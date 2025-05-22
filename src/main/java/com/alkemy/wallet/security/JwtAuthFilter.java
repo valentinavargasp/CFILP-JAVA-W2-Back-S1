@@ -5,9 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alkemy.wallet.services.CustomUserDetailService;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +16,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
     private final JwtService jwtService;
     private final CustomUserDetailService userDetailsService;
@@ -30,13 +29,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                  HttpServletResponse response, 
-                                  FilterChain filterChain) {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) {
         try {
             String authHeader = request.getHeader("Authorization");
             final String jwt;
-            final String userEmail;
+            final String username;
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 logger.debug("No se encontró token JWT en la solicitud: {}", request.getRequestURI());
@@ -45,24 +44,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             jwt = authHeader.substring(7);
-            userEmail = jwtService.extractUserEmail(jwt);
-            logger.debug("Procesando autenticación para usuario: {}", userEmail);
+            username = jwtService.extractUserEmail(jwt);
+            logger.debug("Procesando autenticación para usuario: {}", username);
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                            null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    logger.info("Usuario autenticado exitosamente: {}", userEmail);
+                    logger.info("Usuario autenticado exitosamente: {}", username);
                 } else {
-                    logger.warn("Token JWT inválido para el usuario: {}", userEmail);
+                    logger.warn("Token JWT inválido para el usuario: {}", username);
                 }
             }
 
             filterChain.doFilter(request, response);
-            
+
         } catch (JwtException e) {
             logger.error("Error en la validación del token JWT: {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -4,57 +4,65 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
+import com.alkemy.wallet.dto.TransactionDTO;
+import com.alkemy.wallet.mapper.TransactionMapper;
 import com.alkemy.wallet.models.transaction.Transaction;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.services.transaction.TransactionService;
 
-public abstract class TransactionServiceImpl<T extends Transaction> implements TransactionService<T> {
+import lombok.RequiredArgsConstructor;
 
-    protected final JpaRepository<T, Integer> repository;
+@Service
+@RequiredArgsConstructor
+public class TransactionServiceImpl implements TransactionService<Transaction> {
 
-    public TransactionServiceImpl(JpaRepository<T, Integer> repository) {
-        this.repository = repository;
-    }
+    private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
 
     // Método para obtener todas las transacciones
     @Override
-    public List<T> getAll() {
-        return repository.findAll();
+    public List<TransactionDTO> getAll() {
+        return transactionRepository.findAll().stream()
+                .map(transactionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     // Método para obtener una transacción por ID
     // Si no se encuentra la transacción, lanza una excepción
     // IllegalArgumentException
     @Override
-    public T getById(int id) {
-        return repository.findById(id)
+    public TransactionDTO getById(int id) {
+        return transactionRepository.findById(id)
+                .map(transactionMapper::toDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Transacción no encontrada con ID: " + id));
     }
 
     // Método para guardar una transacción
     // Si la transacción ya existe, lanza una excepción IllegalArgumentException
-    @Override
-    public T save(T transaction) {
-        if (repository.existsById(transaction.getId())) {
-            throw new IllegalArgumentException("Transacción ya existe con ID: " + transaction.getId());
+    public TransactionDTO save(TransactionDTO transactionDTO) {
+        if (transactionRepository.existsById(transactionDTO.getId())) {
+            throw new IllegalArgumentException("Transacción ya existe con ID: " + transactionDTO.getId());
         }
-        return repository.save(transaction);
+        Transaction transaction = transactionMapper.toEntity(transactionDTO);
+        return transactionMapper.toDTO(transactionRepository.save(transaction));
     }
 
     // Método para borrar una transacción
     @Override
     public void deleteById(int id) {
-        repository.deleteById(id);
+        transactionRepository.deleteById(id);
     }
 
     // Método para obtener transacciones por fecha
     // Filtra las transacciones por fecha y devuelve una lista de transacciones que
     // coinciden con la fecha
     @Override
-    public List<T> getByDate(LocalDate date) {
-        return repository.findAll().stream()
+    public List<TransactionDTO> getByDate(LocalDate date) {
+        return transactionRepository.findAll().stream()
                 .filter(t -> t.getTransactionDate().toLocalDate().equals(date))
+                .map(transactionMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -62,9 +70,20 @@ public abstract class TransactionServiceImpl<T extends Transaction> implements T
     // Filtra las transacciones por ID de cuenta y devuelve una lista de
     // transacciones que coinciden con el ID de cuenta
     @Override
-    public List<T> getByUserId(int userId) {
-        return repository.findAll().stream()
+    public List<TransactionDTO> getByUserId(int userId) {
+        return transactionRepository.findAll().stream()
                 .filter(t -> t.getAccount().getUser().getId() == userId)
+                .map(transactionMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public TransactionDTO save(Transaction transaction) {
+        if (transactionRepository.existsById(transaction.getId())) {
+            throw new IllegalArgumentException("Transacción ya existe con ID: " + transaction.getId());
+        }
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        return transactionMapper.toDTO(savedTransaction);
+    }
+
 }

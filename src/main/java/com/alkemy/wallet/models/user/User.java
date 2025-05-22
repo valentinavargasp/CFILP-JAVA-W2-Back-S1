@@ -1,13 +1,9 @@
 package com.alkemy.wallet.models.user;
 
-
-
-
-import java.util.List;
-
+import java.util.Set;
+import org.springframework.context.annotation.Lazy;
 import com.alkemy.wallet.models.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,17 +44,18 @@ public class User {
 
     // Relación uno a uno con la entidad Person
     @OneToOne
-    @JoinColumn(name = "id_person", referencedColumnName = "id_person")
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person", nullable = true)
     private Person person;
 
     //Relación con Account. Para ver las cuentas de un usuario
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<Account> accounts;
+    private Set<Account> accounts;
 
     // Relación con UserRole. Para ver los roles de un usuario
     @OneToMany(mappedBy = "user")
+    @Lazy(value = false)
     @JsonIgnore
-    private List<UserRole> userRoles;
+    private Set<UserRole> userRoles;
 
 }
