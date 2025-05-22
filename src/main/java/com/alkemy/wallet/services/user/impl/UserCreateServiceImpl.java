@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.alkemy.wallet.dto.UserCreateDTO;
+import com.alkemy.wallet.mapper.PersonMapper;
 import com.alkemy.wallet.mapper.UserMapper;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.account.AccountType;
@@ -26,14 +27,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserCreateServiceImpl implements UserCreateService {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     private final PersonRepository personRepository;
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;
     private final AccountRepository accountRepository;
     private final AccountTypeRepository accountTypeRepository;
+    private final UserMapper userMapper;
+    private final PersonMapper personMapper;
 
     /**
      * Guarda un nuevo usuario a partir de un DTO.
@@ -49,7 +51,7 @@ public class UserCreateServiceImpl implements UserCreateService {
 
         try {
             // Se guarda la persona
-            Person person = userMapper.toEntity(userCreateDTO.getPerson());
+            Person person = personMapper.toEntity(userCreateDTO.getPerson());
             personRepository.save(person);
 
             // Se guarda el usuario con la contraseña encriptada y el id de la persona

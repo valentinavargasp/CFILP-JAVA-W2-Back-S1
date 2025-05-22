@@ -11,7 +11,14 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @EntityGraph(attributePaths = { "userRoles.role", "accounts", "person" })
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.userRoles ur LEFT JOIN FETCH u.accounts WHERE u.id = :id")
+    @Query("""
+    SELECT u FROM User u
+    LEFT JOIN FETCH u.person
+    LEFT JOIN FETCH u.userRoles ur
+    LEFT JOIN FETCH ur.role
+    LEFT JOIN FETCH u.accounts
+    WHERE u.id = :id
+""")
     Optional<User> findByIdWithRelations(@Param("id") int id);
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.userRoles ur LEFT JOIN FETCH ur.role WHERE u.username = :username")
