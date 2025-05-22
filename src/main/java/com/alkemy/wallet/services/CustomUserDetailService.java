@@ -2,7 +2,6 @@ package com.alkemy.wallet.services;
 
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.utils.ColorLogger;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +23,14 @@ public class CustomUserDetailService implements UserDetailsService {
     public CustomUserDetailService(UserRepository userRepo) {
         this.userRepo = Objects.requireNonNull(userRepo, "UserRepository no puede ser nulo");
     }
-
-    // todo: loadUserByUsername deberia ser ByEmail, o podriamos crear un userName
-    // en User
+    
+    /**
+     * Carga un usuario por su nombre de usuario y asigna los roles correspondientes
+     *
+     * @param username el nombre de usuario a buscar
+     * @return UserDetails con la información del usuario y sus roles
+     * @throws UsernameNotFoundException si el usuario no se encuentra
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().isEmpty()) {

@@ -1,16 +1,9 @@
 package com.alkemy.wallet.models.user;
 
-
-
-
-import java.util.List;
 import java.util.Set;
-
 import org.springframework.context.annotation.Lazy;
-
 import com.alkemy.wallet.models.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
