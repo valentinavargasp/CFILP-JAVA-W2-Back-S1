@@ -10,5 +10,5 @@ import com.alkemy.wallet.models.user.Role;
 public interface RoleMapper {
     RoleDTO toDTO(Role role);
 
-    Role toEntity(RoleDTO dto);
+    
 }
