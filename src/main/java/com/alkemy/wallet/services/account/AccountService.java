@@ -20,7 +20,7 @@ public interface AccountService {
 
     public AccountDTO getAccountById(int id);
 
-    public List<Account> getAllAccountByUserId(int userId);
+    public List<AccountDTO> getAllAccountByUserId(int userId);
 
     public List<Transaction> getAccountTransactions(int accountId);
 
