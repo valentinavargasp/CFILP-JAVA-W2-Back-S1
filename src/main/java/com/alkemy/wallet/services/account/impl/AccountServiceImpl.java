@@ -67,13 +67,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAllAccountByUserId(int userId) {
+    public List<AccountDTO> getAllAccountByUserId(int userId) {
         try {
             List<Account> accounts = accountRepository.findByUserId(userId);
             if (accounts.isEmpty()) {
                 throw new RuntimeException("No se encontraron cuentas para el usuario con ID " + userId);
             }
-            return accounts;
+            List<AccountDTO> accountDTOs = accountMapper.toDTOList(accounts);
+       
+            return accountDTOs;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

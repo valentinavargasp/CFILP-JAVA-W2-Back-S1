@@ -52,7 +52,7 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "Lista de cuentas por usuario")
     @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Account>> getAccountsByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<AccountDTO>> getAccountsByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(accountService.getAllAccountByUserId(userId));
     }
 
