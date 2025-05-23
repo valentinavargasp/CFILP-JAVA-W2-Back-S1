@@ -1,31 +1,36 @@
 package com.alkemy.wallet.dto;
 
+import java.util.List;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Data Transfer Object (DTO) para representar un usuario.
  * Se utiliza para enviar datos al frontend sin exponer la entidad completa.
  */
 @Data
+@Getter
+@Setter
 public class UserDTO {
 
     private int id;
     private String username;
 
-    public int getId() {
-        return id;
-    }
+    // Persona asociada
+    private String name;
+    private String lastName;
+    private String address;
+    private String location;
+    private String province;
+    private String phoneNumber;
+    private int identityCard;
+    private String dateBirth;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+     // Roles
+    private List<String> roles;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    // Cuentas
+    private List<AccountDTO> accounts;
+    
 }

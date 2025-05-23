@@ -6,6 +6,8 @@ import com.alkemy.wallet.services.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alkemy.wallet.dto.UserDTO;
 import com.alkemy.wallet.mapper.UserMapper;
 import com.alkemy.wallet.models.user.User;
@@ -16,7 +18,7 @@ import com.alkemy.wallet.repository.user.UserRepository;
 public class UserServiceImpl implements UserService {
     
     private final UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     /**
      * Devuelve todos los usuarios como DTOs.
@@ -61,12 +63,13 @@ public class UserServiceImpl implements UserService {
      * Obtiene un usuario por su ID.
      */
     @Override
+    @Transactional()
     public UserDTO getUserById(int id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findByIdWithRelations(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
         return userMapper.toDTO(user);
     }
 
     
- 
+
 }

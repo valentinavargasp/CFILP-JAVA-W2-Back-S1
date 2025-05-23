@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.alkemy.wallet.dto.AccountDTO;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.financer_product.FinancerProduct;
 import com.alkemy.wallet.models.transaction.Transaction;
@@ -27,7 +28,7 @@ public class AccountController {
     @Operation(summary = "Crear nueva cuenta")
     @ApiResponse(responseCode = "201", description = "Cuenta creada")
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+    public ResponseEntity<Account> createAccount(@RequestBody AccountDTO account) {
         Account created = accountService.createAccount(account);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -42,8 +43,8 @@ public class AccountController {
     @Operation(summary = "Obtener cuenta por ID")
     @ApiResponse(responseCode = "200", description = "Cuenta encontrada")
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable int id) {
-        Account account = accountService.getAccountById(id);
+    public ResponseEntity<AccountDTO> getAccountById(@PathVariable int id) {
+        AccountDTO account = accountService.getAccountById(id);
         return ResponseEntity.ok(account);
     }
 
@@ -51,7 +52,7 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "Lista de cuentas por usuario")
     @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Account>> getAccountsByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<AccountDTO>> getAccountsByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(accountService.getAllAccountByUserId(userId));
     }
 
