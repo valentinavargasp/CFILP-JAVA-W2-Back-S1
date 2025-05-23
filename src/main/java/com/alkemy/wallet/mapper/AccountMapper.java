@@ -36,7 +36,7 @@ public abstract class AccountMapper {
     // Método auxiliar usando el repositorio
     protected AccountType accountTypeFromString(String name) {
         if (name == null) return null;
-        return accountTypeRepository.findByName(name);
+        return accountTypeRepository.findByAccountType(name);
     }
 
     protected User userFromId(int userId) {

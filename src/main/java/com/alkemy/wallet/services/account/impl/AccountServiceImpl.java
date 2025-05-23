@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
         String accountTypeName = accountDTO.getAccountType();
 
         // Verificar si el tipo de cuenta existe por el nombre
-        AccountType accountType = accountTypeRepository.findByName(accountTypeName);
+        AccountType accountType = accountTypeRepository.findByAccountType(accountTypeName);
         if (accountType == null) {
             throw new RuntimeException("Tipo de cuenta no encontrada con el nombre " + accountTypeName);
         }
