@@ -45,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada con id " + id));
            
-           System.out.println("Account: " + account);
+          
                 return accountMapper.toDTO(account);
         }
 

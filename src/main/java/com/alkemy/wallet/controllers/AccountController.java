@@ -44,7 +44,6 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "Cuenta encontrada")
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> getAccountById(@PathVariable int id) {
-         System.out.println("llamada desde account controller");
         AccountDTO account = accountService.getAccountById(id);
         return ResponseEntity.ok(account);
     }
