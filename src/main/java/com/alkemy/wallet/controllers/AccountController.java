@@ -28,7 +28,7 @@ public class AccountController {
     @Operation(summary = "Crear nueva cuenta")
     @ApiResponse(responseCode = "201", description = "Cuenta creada")
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+    public ResponseEntity<Account> createAccount(@RequestBody AccountDTO account) {
         Account created = accountService.createAccount(account);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
