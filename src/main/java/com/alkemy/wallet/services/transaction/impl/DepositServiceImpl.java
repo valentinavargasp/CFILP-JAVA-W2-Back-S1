@@ -81,25 +81,30 @@ public class DepositServiceImpl implements DepositService {
         return deposits;
     }
 
-    @Override
-    public DepositDTO save(DepositDTO depositDTO) {
-        // Buscar cuenta por ID
-        Account account = accountRepository.findById(depositDTO.getAccountId())
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Cuenta no encontrada con ID: " + depositDTO.getAccountId()));
+@Override
+public DepositDTO save(DepositDTO depositDTO) {
+    // Buscar cuenta por ID
+    Account account = accountRepository.findById(depositDTO.getAccountId())
+            .orElseThrow(
+                    () -> new EntityNotFoundException("Cuenta no encontrada con ID: " + depositDTO.getAccountId()));
 
-        // Convertir DTO a entidad
-        Deposit deposit = depositMapper.toEntity(depositDTO);
-        deposit.setAccount(account); // Asignar la cuenta recuperada
+    // Convertir DTO a entidad
+    Deposit deposit = depositMapper.toEntity(depositDTO);
+    deposit.setAccount(account); // Asignar la cuenta recuperada
 
-        // Actualizar saldo
-        double nuevoSaldo = account.getBalance() + deposit.getTransactionAmount();
-        account.setBalance(nuevoSaldo);
-        accountRepository.save(account);
-
-        // Guardar depósito y retornar el DTO correspondiente
-        Deposit savedDeposit = depositRepository.save(deposit);
-        return depositMapper.toDTO(savedDeposit);
+    // Asignar la fecha actual si está nula
+    if (deposit.getTransactionDate() == null) {
+        deposit.setTransactionDate(java.time.LocalDateTime.now());
     }
+
+    // Actualizar saldo
+    double nuevoSaldo = account.getBalance() + deposit.getTransactionAmount();
+    account.setBalance(nuevoSaldo);
+    accountRepository.save(account);
+
+    // Guardar depósito y retornar el DTO correspondiente
+    Deposit savedDeposit = depositRepository.save(deposit);
+    return depositMapper.toDTO(savedDeposit);
+}
 
 }
