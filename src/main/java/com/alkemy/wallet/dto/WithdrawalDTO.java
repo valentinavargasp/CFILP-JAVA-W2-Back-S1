@@ -12,4 +12,5 @@ public class WithdrawalDTO {
     private int accountId;
     private String method;
     private String branch;
+    private String description;
 }

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import com.alkemy.wallet.dto.WithdrawalDTO;
 import com.alkemy.wallet.mapper.WithdrawalMapper;
 import com.alkemy.wallet.models.account.Account;
+import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
 import com.alkemy.wallet.models.transaction.Withdrawal;
 import com.alkemy.wallet.repository.account.AccountRepository;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.transaction.WithdrawalRepository;
 import com.alkemy.wallet.services.transaction.WithdrawalService;
 
@@ -22,6 +24,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
 
     private final AccountRepository accountRepository;
     private final WithdrawalRepository withdrawalRepository;
+    private final TransactionRepository transactionRepository;
     private final WithdrawalMapper withdrawalMapper;
 
 
@@ -81,22 +84,23 @@ public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
     Account account = accountRepository.findById(withdrawalDTO.getAccountId())
         .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawalDTO.getAccountId()));
 
-    // 2. Mapear el DTO a entidad
-    Withdrawal withdrawal = withdrawalMapper.toEntity(withdrawalDTO);
-
-    // 3. Asignar la cuenta encontrada al retiro
-    withdrawal.setAccount(account);
-
-    // 3.1 Asignar la fecha actual si está nula
-    if (withdrawal.getTransactionDate() == null) {
-        withdrawal.setTransactionDate(java.time.LocalDateTime.now());
-    }
-
-    // 4. Verificar saldo suficiente
-    double monto = withdrawal.getTransactionAmount();
+    // 2. Verificar saldo suficiente
+    double monto = withdrawalDTO.getTransactionAmount();
     if (account.getBalance() < monto) {
         throw new IllegalArgumentException("Saldo insuficiente para retirar");
     }
+
+    // 3. Crear y guardar la transacción
+    Transaction transaction = new Transaction();
+    transaction.setTransactionAmount(monto);
+    transaction.setTransactionDate(withdrawalDTO.getTransactionDate() != null ? withdrawalDTO.getTransactionDate() : java.time.LocalDateTime.now());
+    transaction.setAccount(account);
+    Transaction savedTransaction = transactionRepository.save(transaction);
+
+    // 4. Mapear el DTO a entidad y asociar cuenta y transacción
+    Withdrawal withdrawal = withdrawalMapper.toEntity(withdrawalDTO);
+    withdrawal.setAccount(account);
+    withdrawal.setTransaction(savedTransaction);
 
     // 5. Actualizar saldo y guardar
     account.setBalance(account.getBalance() - monto);

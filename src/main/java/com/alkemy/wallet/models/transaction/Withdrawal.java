@@ -42,4 +42,7 @@ public class Withdrawal {
     @Column(name = "branch")
     private String branch;
 
+    @ManyToOne
+    @JoinColumn(name = "transaction_id", referencedColumnName = "id_transaction")
+    private Transaction transaction;
 }

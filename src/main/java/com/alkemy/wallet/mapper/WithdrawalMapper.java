@@ -16,6 +16,7 @@ public interface WithdrawalMapper {
     WithdrawalDTO toDto(Withdrawal withdrawal);
 
     @Mapping(target = "account", ignore = true) // se setea en el servicio con el repositorio
+    @Mapping(target = "transaction", ignore = true)
     @Mapping(source = "method", target = "method")
     Withdrawal toEntity(WithdrawalDTO dto);
 
