@@ -9,6 +9,7 @@ import com.alkemy.wallet.models.transaction.Deposit;
 @Mapper(componentModel = "spring", uses = TransactionMapper.class)
 public interface DepositMapper {
     @Mapping(source = "account.id", target = "accountId")
+    @Mapping(target = "description", ignore = true)
     DepositDTO toDto(Deposit deposit);
 
     @Mapping(target = "account", ignore = true)
@@ -16,5 +17,6 @@ public interface DepositMapper {
     Deposit toEntity(DepositDTO dto);
 
     @Mapping(source = "account.id", target = "accountId")
+    @Mapping(target = "description", ignore = true)
     DepositDTO toDTO(Deposit savedDeposit);
 }
