@@ -10,6 +10,7 @@ import lombok.Setter;
 public class AccountDTO {
     private int id;
     private int userId; // ID del usuario propietario de la cuenta
+    private String accountName; // Número de cuenta
     private String cbu;
     private double balance;
     private String alias;
