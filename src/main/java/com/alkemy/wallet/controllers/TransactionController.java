@@ -39,24 +39,23 @@ public class TransactionController {
 
     @Operation(summary = "Buscar transacciones por usuario")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
-        @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para ese usuario")
+            @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para ese usuario")
     })
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TransactionDTO>> getByUserId(@PathVariable int userId) {
         return ResponseEntity.ok(transactionService.getByUserId(userId));
     }
 
-        @Operation(summary = "Buscar transacciones por ID de cuenta")
+    @Operation(summary = "Buscar transacciones por ID de cuenta")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
-        @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para ese usuario")
+            @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para esa cuenta")
     })
     @GetMapping("/account/{accountId}")
     public ResponseEntity<List<TransactionDTO>> getByAccountId(@PathVariable int accountId) {
         return ResponseEntity.ok(transactionService.getByAccountId(accountId));
     }
-
 
     @Operation(summary = "Buscar transacciones por fecha")
     @ApiResponse(responseCode = "200", description = "Transacciones filtradas por fecha")
@@ -65,4 +64,3 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getByDate(LocalDate.parse(date)));
     }
 }
-
