@@ -75,23 +75,34 @@ public class WithdrawalServiceImpl implements WithdrawalService {
      * 3. Restamos el monto y actualizamos la cuenta.
      * 4. Finalmente, guardamos la transacción.
      */
-    @Override
-    public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
+@Override
+public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
+    // 1. Buscar la cuenta por ID desde el DTO
+    Account account = accountRepository.findById(withdrawalDTO.getAccountId())
+        .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawalDTO.getAccountId()));
+
+    // 2. Mapear el DTO a entidad
     Withdrawal withdrawal = withdrawalMapper.toEntity(withdrawalDTO);
 
-    Account account = accountRepository.findById(withdrawal.getAccount().getId())
-            .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawal.getAccount().getId()));
+    // 3. Asignar la cuenta encontrada al retiro
+    withdrawal.setAccount(account);
 
+    // 3.1 Asignar la fecha actual si está nula
+    if (withdrawal.getTransactionDate() == null) {
+        withdrawal.setTransactionDate(java.time.LocalDateTime.now());
+    }
+
+    // 4. Verificar saldo suficiente
     double monto = withdrawal.getTransactionAmount();
-
     if (account.getBalance() < monto) {
         throw new IllegalArgumentException("Saldo insuficiente para retirar");
     }
 
+    // 5. Actualizar saldo y guardar
     account.setBalance(account.getBalance() - monto);
     accountRepository.save(account);
 
     return withdrawalMapper.toDto(withdrawalRepository.save(withdrawal));
-    }
+}
 
 }
