@@ -18,4 +18,6 @@ public interface TransactionService<T extends Transaction> {
     public void deleteById(int id); // Elimina una transacción por id
 
     public List<TransactionDTO> getByUserId(int userId); // Lista de transacciones por usuario
+
+    public List<TransactionDTO> getByAccountId(int accountId); // Lista de transacciones por cuenta
 }

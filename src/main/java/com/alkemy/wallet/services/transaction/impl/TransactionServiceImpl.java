@@ -86,4 +86,12 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
         return transactionMapper.toDto(savedTransaction);
     }
 
+    @Override
+    public List<TransactionDTO> getByAccountId(int accountId) {
+        return transactionRepository.findAll().stream()
+                .filter(t -> t.getAccount().getId() == accountId)
+                .map(transactionMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

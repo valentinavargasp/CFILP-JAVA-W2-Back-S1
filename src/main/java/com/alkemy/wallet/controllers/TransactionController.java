@@ -47,6 +47,17 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getByUserId(userId));
     }
 
+        @Operation(summary = "Buscar transacciones por ID de cuenta")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
+        @ApiResponse(responseCode = "404", description = "No se encontraron transacciones para ese usuario")
+    })
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<List<TransactionDTO>> getByAccountId(@PathVariable int accountId) {
+        return ResponseEntity.ok(transactionService.getByAccountId(accountId));
+    }
+
+
     @Operation(summary = "Buscar transacciones por fecha")
     @ApiResponse(responseCode = "200", description = "Transacciones filtradas por fecha")
     @GetMapping("/date/{date}")
