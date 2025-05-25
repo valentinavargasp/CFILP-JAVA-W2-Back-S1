@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.alkemy.wallet.dto.TransferDTO;
 import com.alkemy.wallet.mapper.TransferMapper;
 import com.alkemy.wallet.models.account.Account;
+import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.models.transaction.Transfer;
 import com.alkemy.wallet.repository.account.AccountRepository;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.transaction.TransferRepository;
 import com.alkemy.wallet.services.transaction.TransferService;
 
@@ -22,6 +24,7 @@ public class TransferServiceImpl implements TransferService {
 
     private final AccountRepository accountRepository;
     private final TransferRepository transferRepository;
+    private final TransactionRepository transactionRepository;
     private final TransferMapper transferMapper;
 
 
@@ -67,8 +70,13 @@ public class TransferServiceImpl implements TransferService {
      */
 @Override
 public TransferDTO save(TransferDTO dto) {
-    Transfer transfer = transferMapper.toEntity(dto);
 
+    if(dto.getTransactionDate() == null) {
+        dto.setTransactionDate(java.time.LocalDateTime.now());
+    }
+
+    Transfer transfer = transferMapper.toEntity(dto);
+    // 1. Buscar cuentas origen y destino
     Account origen = transfer.getAccount();
     Account destino = transfer.getDestinationAccount();
     double monto = transfer.getTransactionAmount();
@@ -78,16 +86,41 @@ public TransferDTO save(TransferDTO dto) {
     Account cuentaDestino = accountRepository.findById(destino.getId())
             .orElseThrow(() -> new EntityNotFoundException("Cuenta destino no encontrada"));
 
+    // 2. Verificar saldo suficiente en la cuenta origen
     if (cuentaOrigen.getBalance() < monto) {
         throw new IllegalArgumentException("Saldo insuficiente en la cuenta origen");
     }
 
+    // 3. Actualizar saldos de las cuentas
     cuentaOrigen.setBalance(cuentaOrigen.getBalance() - monto);
     cuentaDestino.setBalance(cuentaDestino.getBalance() + monto);
 
+    //4. Se crea la trasnacción para ambas cuenttas 
+        // Transacción para la cuenta origen (monto negativo)
+    Transaction transactionOrigen = new Transaction();
+    transactionOrigen.setTransactionAmount(-monto); 
+    transactionOrigen.setTransactionDate(dto.getTransactionDate());
+    transactionOrigen.setAccount(cuentaOrigen);
+    transactionOrigen.setTransactionType("TRANSFER_OUT");   
+    transactionOrigen.setDescription(dto.getDescription());
+        // Transacción para la cuenta destino (monto positivo)
+    Transaction transactionDestino = new Transaction();
+    transactionDestino.setTransactionAmount(monto); 
+    transactionDestino.setTransactionDate(dto.getTransactionDate());
+    transactionDestino.setAccount(cuentaDestino);
+    transactionDestino.setTransactionType("TRANSFER_IN");
+    transactionDestino.setDescription("Transferencia recibida de " + cuentaOrigen.getUser().getPerson().getFullName());
+
+    // Guardar las transacciones
+    transactionRepository.save(transactionOrigen);
+    transactionRepository.save(transactionDestino);
+
+
+    // 5. Guardar las cuentas actualizadas
     accountRepository.save(cuentaOrigen);
     accountRepository.save(cuentaDestino);
 
+    // 6. Guardar la transferencia
     Transfer savedTransfer = transferRepository.save(transfer);
 
     return transferMapper.toDto(savedTransfer);

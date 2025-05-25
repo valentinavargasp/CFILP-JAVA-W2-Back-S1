@@ -101,6 +101,8 @@ public DepositDTO save(DepositDTO depositDTO) {
     transaction.setTransactionAmount(depositDTO.getTransactionAmount());
     transaction.setTransactionDate(depositDTO.getTransactionDate());
     transaction.setAccount(account); // Asignar la cuenta a la transacción
+    transaction.setDescription(depositDTO.getDescription());
+    transaction.setTransactionType("DEPOSIT"); // Asignar tipo de transacción
     Transaction savedTransaction = transactionRepository.save(transaction);
                
 

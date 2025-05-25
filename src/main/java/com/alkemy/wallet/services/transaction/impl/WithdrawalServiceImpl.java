@@ -95,6 +95,8 @@ public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
     transaction.setTransactionAmount(monto);
     transaction.setTransactionDate(withdrawalDTO.getTransactionDate() != null ? withdrawalDTO.getTransactionDate() : java.time.LocalDateTime.now());
     transaction.setAccount(account);
+    transaction.setTransactionType("WITHDRAWAL");
+    transaction.setDescription(withdrawalDTO.getDescription());
     Transaction savedTransaction = transactionRepository.save(transaction);
 
     // 4. Mapear el DTO a entidad y asociar cuenta y transacción
