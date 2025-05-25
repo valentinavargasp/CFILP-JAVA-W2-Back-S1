@@ -80,6 +80,11 @@ public class WithdrawalServiceImpl implements WithdrawalService {
      */
 @Override
 public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
+      // Asignar la fecha actual si está nula
+    if (withdrawalDTO.getTransactionDate() == null) {
+        withdrawalDTO.setTransactionDate(java.time.LocalDateTime.now());
+    }
+    
     // 1. Buscar la cuenta por ID desde el DTO
     Account account = accountRepository.findById(withdrawalDTO.getAccountId())
         .orElseThrow(() -> new EntityNotFoundException("Cuenta no encontrada con ID: " + withdrawalDTO.getAccountId()));
@@ -111,4 +116,13 @@ public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
     return withdrawalMapper.toDto(withdrawalRepository.save(withdrawal));
 }
 
+
+    @Override
+    public List<WithdrawalDTO> getByAccountId(int accountId) {
+        List<Withdrawal> withdrawals = withdrawalRepository.findByAccountId(accountId);
+        if (withdrawals.isEmpty()) {
+            throw new EntityNotFoundException("No se encontraron retiros para la cuenta con ID: " + accountId);
+        }
+        return withdrawalMapper.toDtoList(withdrawals);
+    }
 }

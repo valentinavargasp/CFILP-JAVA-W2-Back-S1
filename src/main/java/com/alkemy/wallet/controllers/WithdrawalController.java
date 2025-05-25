@@ -35,6 +35,15 @@ public class WithdrawalController {
         System.out.println("WithdrawalDTO recibido: " + withdrawalDTO);
         return ResponseEntity.status(201).body(withdrawalService.save(withdrawalDTO));
     }
+    @Operation(summary = "Listar todos los retiros por cuenta")
+    @ApiResponse(responseCode = "200", description = "Listado completo de retiros")
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<List<WithdrawalDTO>> getByAccountId(@PathVariable int accountId) {
+        return ResponseEntity.ok(withdrawalService.getByAccountId(accountId));
+    }
+
+
+
 
     @Operation(summary = "Buscar retiros por sucursal")
     @ApiResponse(responseCode = "200", description = "Retiros encontrados")
