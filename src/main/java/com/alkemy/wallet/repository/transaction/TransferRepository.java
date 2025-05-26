@@ -10,4 +10,6 @@ import com.alkemy.wallet.models.transaction.Transfer;
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, Integer> {
     List<Transfer> findByDestinationAccount_Id(int accountId);
+
+    List<Transfer> findByAccountId(int accountId);
 }
