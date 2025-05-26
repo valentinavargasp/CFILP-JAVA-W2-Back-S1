@@ -13,7 +13,7 @@ import com.alkemy.wallet.dto.TransferDTO;
 import com.alkemy.wallet.services.transaction.TransferService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
