@@ -41,4 +41,11 @@ public class TransferController {
     public ResponseEntity<List<TransferDTO>> getByDestinationAccountId(@PathVariable int accountId) {
         return ResponseEntity.ok(transferService.getByDestinationAccountId(accountId));
     }
+
+    @Operation(summary = "Buscar transferencias por cuenta")
+    @ApiResponse(responseCode = "200", description = "Transferencias encontradas")
+    @GetMapping("/account/{accountId}") 
+    public ResponseEntity<List<TransferDTO>> getByAccountId(@PathVariable int accountId) {
+        return ResponseEntity.ok(transferService.getByAccountId(accountId));
+    }
 }

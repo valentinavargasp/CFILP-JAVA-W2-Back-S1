@@ -12,4 +12,6 @@ public interface TransferService {
     List<TransferDTO> getByUserId(int userId);
 
     TransferDTO save(TransferDTO transfer);
+
+    List<TransferDTO> getByAccountId(int accountId);
 }
