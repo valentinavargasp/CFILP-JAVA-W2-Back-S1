@@ -120,9 +120,7 @@ public WithdrawalDTO save(WithdrawalDTO withdrawalDTO) {
     @Override
     public List<WithdrawalDTO> getByAccountId(int accountId) {
         List<Withdrawal> withdrawals = withdrawalRepository.findByAccountId(accountId);
-        if (withdrawals.isEmpty()) {
-            throw new EntityNotFoundException("No se encontraron retiros para la cuenta con ID: " + accountId);
-        }
+        // Si la lista está vacía, simplemente retorna la lista vacía mapeada
         return withdrawalMapper.toDtoList(withdrawals);
     }
 }
