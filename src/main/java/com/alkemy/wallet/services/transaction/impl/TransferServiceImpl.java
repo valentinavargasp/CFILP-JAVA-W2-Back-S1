@@ -127,8 +127,7 @@ public class TransferServiceImpl implements TransferService {
         transfer.setDestinationAccount(cuentaDestino);
         transfer.setTransactionAmount(monto);
         transfer.setTransactionDate(dto.getTransactionDate());
-        transfer.setDescription("Transferencia recibida de " + cuentaOrigen.getUser().getPerson().getFullName());
-        transfer.setDestinationAccountOwner(cuentaDestino.getUser().getPerson().getFullName());
+        transfer.setDescription(dto.getDescription());
 
         Transfer savedTransfer = transferRepository.save(transfer);
 
