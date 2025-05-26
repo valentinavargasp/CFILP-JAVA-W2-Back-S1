@@ -100,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createAccount(AccountDTO accountDTO) {
+    public AccountDTO createAccount(AccountDTO accountDTO) {
 
         int userId = accountDTO.getUserId();
         // Verificar si el usuario existe por el ID
@@ -121,7 +121,9 @@ public class AccountServiceImpl implements AccountService {
         account.setUser(user); // Asignar el usuario a la cuenta
         account.setAccountType(accountType); // Asignar el tipo de cuenta a la cuenta
         account.setBalance(0);
-        return accountRepository.save(account);
+        
+        Account createdAccount =  accountRepository.save(account);// cuenta desde DB con ID 
+        return accountMapper.toDTO(createdAccount); // Convertir la cuenta a DTO y devolverla
     }
 
     @Override

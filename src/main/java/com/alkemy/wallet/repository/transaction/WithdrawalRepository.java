@@ -13,4 +13,6 @@ public interface WithdrawalRepository extends JpaRepository<Withdrawal, Integer>
     public List<Withdrawal> findByBranch(String branch);
 
     public List<Withdrawal> findByMethod(TransactionMethodEnum method);
+
+    public List<Withdrawal> findByAccountId(int accountId);
 }

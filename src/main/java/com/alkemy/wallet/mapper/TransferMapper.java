@@ -11,7 +11,9 @@ public interface TransferMapper {
 
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "destinationAccount.id", target = "destinationAccountId")
-    
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "recipientAlias", ignore = true)
+    @Mapping(target = "recipientCBU", ignore = true)
     TransferDTO toDto(Transfer transfer);
 
     @Mapping(target = "account", ignore = true)

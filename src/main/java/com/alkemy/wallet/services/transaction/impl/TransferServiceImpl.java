@@ -2,14 +2,15 @@ package com.alkemy.wallet.services.transaction.impl;
 
 import java.util.List;
 
-
 import org.springframework.stereotype.Service;
 
 import com.alkemy.wallet.dto.TransferDTO;
 import com.alkemy.wallet.mapper.TransferMapper;
 import com.alkemy.wallet.models.account.Account;
+import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.models.transaction.Transfer;
 import com.alkemy.wallet.repository.account.AccountRepository;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.transaction.TransferRepository;
 import com.alkemy.wallet.services.transaction.TransferService;
 
@@ -22,8 +23,8 @@ public class TransferServiceImpl implements TransferService {
 
     private final AccountRepository accountRepository;
     private final TransferRepository transferRepository;
+    private final TransactionRepository transactionRepository;
     private final TransferMapper transferMapper;
-
 
     // Implementación del método para obtener transferencias por ID de cuenta de
     // destino
@@ -67,31 +68,73 @@ public class TransferServiceImpl implements TransferService {
      */
 @Override
 public TransferDTO save(TransferDTO dto) {
-    Transfer transfer = transferMapper.toEntity(dto);
 
-    Account origen = transfer.getAccount();
-    Account destino = transfer.getDestinationAccount();
-    double monto = transfer.getTransactionAmount();
+    if (dto.getTransactionDate() == null) {
+        dto.setTransactionDate(java.time.LocalDateTime.now());
+    }
 
-    Account cuentaOrigen = accountRepository.findById(origen.getId())
+    // Buscar cuenta origen por ID
+    Account cuentaOrigen = accountRepository.findById(dto.getAccountId())
             .orElseThrow(() -> new EntityNotFoundException("Cuenta origen no encontrada"));
-    Account cuentaDestino = accountRepository.findById(destino.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Cuenta destino no encontrada"));
 
+    // Buscar cuenta destino: por ID, CBU o alias
+    Account cuentaDestino = null;
+    if (dto.getDestinationAccountId() != null) {
+        cuentaDestino = accountRepository.findById(dto.getDestinationAccountId())
+                .orElseThrow(() -> new EntityNotFoundException("Cuenta destino no encontrada por ID"));
+    } else if (dto.getRecipientCBU() != null && !dto.getRecipientCBU().isEmpty()) {
+        cuentaDestino = accountRepository.findByCbu(dto.getRecipientCBU())
+                .orElseThrow(() -> new EntityNotFoundException("Cuenta destino no encontrada por CBU"));
+    } else if (dto.getRecipientAlias() != null && !dto.getRecipientAlias().isEmpty()) {
+        cuentaDestino = accountRepository.findByAlias(dto.getRecipientAlias())
+                .orElseThrow(() -> new EntityNotFoundException("Cuenta destino no encontrada por alias"));
+    } else {
+        throw new IllegalArgumentException("Debes especificar destinationAccountId, recipientCBU o recipientAlias");
+    }
+
+    double monto = dto.getTransactionAmount();
+
+    // Validar saldo
     if (cuentaOrigen.getBalance() < monto) {
         throw new IllegalArgumentException("Saldo insuficiente en la cuenta origen");
     }
 
+    // Actualizar saldos
     cuentaOrigen.setBalance(cuentaOrigen.getBalance() - monto);
     cuentaDestino.setBalance(cuentaDestino.getBalance() + monto);
 
+    // Crear transacciones
+    Transaction transactionOrigen = new Transaction();
+    transactionOrigen.setTransactionAmount(-monto);
+    transactionOrigen.setTransactionDate(dto.getTransactionDate());
+    transactionOrigen.setAccount(cuentaOrigen);
+    transactionOrigen.setTransactionType("TRANSFER_OUT");
+    transactionOrigen.setDescription(dto.getDescription());
+
+    Transaction transactionDestino = new Transaction();
+    transactionDestino.setTransactionAmount(monto);
+    transactionDestino.setTransactionDate(dto.getTransactionDate());
+    transactionDestino.setAccount(cuentaDestino);
+    transactionDestino.setTransactionType("TRANSFER_IN");
+    transactionDestino.setDescription("Transferencia recibida de " + cuentaOrigen.getUser().getPerson().getFullName());
+
+    transactionRepository.save(transactionOrigen);
+    transactionRepository.save(transactionDestino);
+
     accountRepository.save(cuentaOrigen);
     accountRepository.save(cuentaDestino);
+
+    // Crear y guardar transferencia
+    Transfer transfer = new Transfer();
+    transfer.setAccount(cuentaOrigen);
+    transfer.setDestinationAccount(cuentaDestino);
+    transfer.setTransactionAmount(monto);
+    transfer.setTransactionDate(dto.getTransactionDate());
+    transfer.setDescription(dto.getDescription());
 
     Transfer savedTransfer = transferRepository.save(transfer);
 
     return transferMapper.toDto(savedTransfer);
 }
-
 
 }

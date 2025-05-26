@@ -25,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
     @Override
     public List<TransactionDTO> getAll() {
         return transactionRepository.findAll().stream()
-                .map(transactionMapper::toDTO)
+                .map(transactionMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
     @Override
     public TransactionDTO getById(int id) {
         return transactionRepository.findById(id)
-                .map(transactionMapper::toDTO)
+                .map(transactionMapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Transacción no encontrada con ID: " + id));
     }
 
@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
             throw new IllegalArgumentException("Transacción ya existe con ID: " + transactionDTO.getId());
         }
         Transaction transaction = transactionMapper.toEntity(transactionDTO);
-        return transactionMapper.toDTO(transactionRepository.save(transaction));
+        return transactionMapper.toDto(transactionRepository.save(transaction));
     }
 
     // Método para borrar una transacción
@@ -62,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
     public List<TransactionDTO> getByDate(LocalDate date) {
         return transactionRepository.findAll().stream()
                 .filter(t -> t.getTransactionDate().toLocalDate().equals(date))
-                .map(transactionMapper::toDTO)
+                .map(transactionMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -73,7 +73,7 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
     public List<TransactionDTO> getByUserId(int userId) {
         return transactionRepository.findAll().stream()
                 .filter(t -> t.getAccount().getUser().getId() == userId)
-                .map(transactionMapper::toDTO)
+                .map(transactionMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +83,15 @@ public class TransactionServiceImpl implements TransactionService<Transaction> {
             throw new IllegalArgumentException("Transacción ya existe con ID: " + transaction.getId());
         }
         Transaction savedTransaction = transactionRepository.save(transaction);
-        return transactionMapper.toDTO(savedTransaction);
+        return transactionMapper.toDto(savedTransaction);
+    }
+
+    @Override
+    public List<TransactionDTO> getByAccountId(int accountId) {
+        return transactionRepository.findAll().stream()
+                .filter(t -> t.getAccount().getId() == accountId)
+                .map(transactionMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,8 +1,6 @@
 package com.alkemy.wallet.config;
 
-
 import com.alkemy.wallet.security.JwtAuthFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,8 +58,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(null); // Permite todos los orígenes
-        config.setAllowedOrigins(List.of("http://localhost:5500", "http://127.0.0.1:5500")); // Especifica los orígenes permitidos
+        config.setAllowedOrigins(List.of(
+            "http://localhost:5500",
+            "http://127.0.0.1:5500"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
@@ -83,17 +83,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-
-
-
-/*  Antes de usar jwt y  los usuarios en db usabamos usuarios y autenticacion en memoria
-    @Bean
-    public UserDetailsService userDetailsService() {
-        var user = User.withUsername("admin")
-                .password("{noop}admin123")  // {noop} indica que no hay codificación
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
- */

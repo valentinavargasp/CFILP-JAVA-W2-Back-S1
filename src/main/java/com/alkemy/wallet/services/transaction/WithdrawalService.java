@@ -13,4 +13,5 @@ public interface WithdrawalService {
 
     public WithdrawalDTO save(WithdrawalDTO withdrawalDTO);
 
+    public List<WithdrawalDTO> getByAccountId(int accountId);
 }

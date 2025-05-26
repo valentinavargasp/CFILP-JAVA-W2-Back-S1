@@ -2,16 +2,15 @@ package com.alkemy.wallet.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 
 import com.alkemy.wallet.dto.TransactionDTO;
 import com.alkemy.wallet.models.transaction.Transaction;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface TransactionMapper {
-
     @Mapping(source = "account.id", target = "accountId")
-    TransactionDTO toDTO(Transaction transaction);
+    TransactionDTO toDto(Transaction transaction);
 
-    Transaction toEntity(TransactionDTO transactionDTO);
+    @Mapping(target = "account", ignore = true) // Set manually in service
+    Transaction toEntity(TransactionDTO dto);
 }

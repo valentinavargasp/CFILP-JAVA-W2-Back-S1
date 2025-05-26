@@ -26,6 +26,9 @@ public class Account {
     @Column(name = "id_account")
     private int id;
 
+    @Column(name = "account_name")
+    private String accountName; 
+
     @Column(name = "cbu")
     private String cbu;
 

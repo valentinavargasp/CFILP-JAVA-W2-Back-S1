@@ -31,6 +31,12 @@ public class Transaction {
     @Column(name = "transaction_amount")
     private double transactionAmount;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "transaction_type")
+    private String transactionType; 
+
     // Relacionar con la cuenta
     @ManyToOne
     @JoinColumn(name = "id_account", referencedColumnName = "id_account")

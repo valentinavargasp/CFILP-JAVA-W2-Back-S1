@@ -10,6 +10,9 @@ public class TransferDTO {
     private LocalDateTime transactionDate;
     private double transactionAmount;
     private int accountId;
-    private int destinationAccountId;
+    private Integer destinationAccountId;
     private String description;
+    private String recipientCBU;
+    private String recipientAlias;
+
 }

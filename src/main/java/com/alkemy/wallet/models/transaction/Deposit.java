@@ -42,4 +42,7 @@ public class Deposit {
     @Column(name = "source_entity")
     private String sourceEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "transaction_id", referencedColumnName = "id_transaction")
+    private Transaction transaction;
 }

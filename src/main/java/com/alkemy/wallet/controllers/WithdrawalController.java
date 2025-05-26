@@ -13,7 +13,7 @@ import com.alkemy.wallet.dto.WithdrawalDTO;
 import com.alkemy.wallet.services.transaction.WithdrawalService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -32,8 +32,18 @@ public class WithdrawalController {
     @ApiResponse(responseCode = "201", description = "Retiro realizado exitosamente")
     @PostMapping
     public ResponseEntity<WithdrawalDTO> createWithdrawal(@RequestBody WithdrawalDTO withdrawalDTO) {
+        System.out.println("WithdrawalDTO recibido: " + withdrawalDTO);
         return ResponseEntity.status(201).body(withdrawalService.save(withdrawalDTO));
     }
+    @Operation(summary = "Listar todos los retiros por cuenta")
+    @ApiResponse(responseCode = "200", description = "Listado completo de retiros")
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<List<WithdrawalDTO>> getByAccountId(@PathVariable int accountId) {
+        return ResponseEntity.ok(withdrawalService.getByAccountId(accountId));
+    }
+
+
+
 
     @Operation(summary = "Buscar retiros por sucursal")
     @ApiResponse(responseCode = "200", description = "Retiros encontrados")

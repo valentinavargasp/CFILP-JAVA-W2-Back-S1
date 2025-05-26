@@ -11,4 +11,5 @@ public class DepositDTO {
     private int accountId;
     private String method;
     private String sourceEntity;
+    private String description;
 }

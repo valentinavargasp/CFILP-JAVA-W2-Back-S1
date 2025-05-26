@@ -9,9 +9,11 @@ import com.alkemy.wallet.dto.DepositDTO;
 import com.alkemy.wallet.mapper.DepositMapper;
 import com.alkemy.wallet.models.account.Account;
 import com.alkemy.wallet.models.transaction.Deposit;
+import com.alkemy.wallet.models.transaction.Transaction;
 import com.alkemy.wallet.models.transaction.TransactionMethodEnum;
 import com.alkemy.wallet.repository.account.AccountRepository;
 import com.alkemy.wallet.repository.transaction.DepositRepository;
+import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.services.transaction.DepositService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -21,10 +23,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DepositServiceImpl implements DepositService {
 
-    private final AccountRepository accountRepository;
     private final DepositRepository depositRepository;
     private final DepositMapper depositMapper;
-
+    private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
     // Método para obtener depósitos por método de transacción
     // Se utiliza el método valueOf para convertir el string a un enum
     // TransactionMethodEnum
@@ -81,25 +83,43 @@ public class DepositServiceImpl implements DepositService {
         return deposits;
     }
 
-    @Override
-    public DepositDTO save(DepositDTO depositDTO) {
-        // Buscar cuenta por ID
-        Account account = accountRepository.findById(depositDTO.getAccountId())
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Cuenta no encontrada con ID: " + depositDTO.getAccountId()));
-
-        // Convertir DTO a entidad
-        Deposit deposit = depositMapper.toEntity(depositDTO);
-        deposit.setAccount(account); // Asignar la cuenta recuperada
-
-        // Actualizar saldo
-        double nuevoSaldo = account.getBalance() + deposit.getTransactionAmount();
-        account.setBalance(nuevoSaldo);
-        accountRepository.save(account);
-
-        // Guardar depósito y retornar el DTO correspondiente
-        Deposit savedDeposit = depositRepository.save(deposit);
-        return depositMapper.toDTO(savedDeposit);
+@Override
+public DepositDTO save(DepositDTO depositDTO) {
+    
+    // Asignar la fecha actual si está nula
+    if (depositDTO.getTransactionDate() == null) {
+        depositDTO.setTransactionDate(java.time.LocalDateTime.now());
     }
+       
+    // Buscar cuenta por ID
+    Account account = accountRepository.findById(depositDTO.getAccountId())
+            .orElseThrow(
+                    () -> new EntityNotFoundException("Cuenta no encontrada con ID: " + depositDTO.getAccountId()));
+    
+    //Guardar la transaccion
+    Transaction transaction = new Transaction();
+    transaction.setTransactionAmount(depositDTO.getTransactionAmount());
+    transaction.setTransactionDate(depositDTO.getTransactionDate());
+    transaction.setAccount(account); // Asignar la cuenta a la transacción
+    transaction.setDescription(depositDTO.getDescription());
+    transaction.setTransactionType("DEPOSIT"); // Asignar tipo de transacción
+    Transaction savedTransaction = transactionRepository.save(transaction);
+               
+
+    // Convertir DTO a entidad
+    Deposit deposit = depositMapper.toEntity(depositDTO);
+    deposit.setAccount(account); // Asignar la cuenta recuperada
+    deposit.setTransaction(savedTransaction); // Asignar la transacción guardada
+   
+
+    // Actualizar saldo
+    double nuevoSaldo = account.getBalance() + deposit.getTransactionAmount();
+    account.setBalance(nuevoSaldo);
+    accountRepository.save(account);
+
+    // Guardar depósito y retornar el DTO correspondiente
+    Deposit savedDeposit = depositRepository.save(deposit);
+    return depositMapper.toDTO(savedDeposit);
+}
 
 }
