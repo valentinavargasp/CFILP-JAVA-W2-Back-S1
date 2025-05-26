@@ -35,10 +35,6 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public List<TransferDTO> getByDestinationAccountId(int accountId) {
         List<Transfer> transfers = transferRepository.findByDestinationAccount_Id(accountId);
-        if (transfers.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "No se encontraron transferencias con ID de cuenta de destino: " + accountId);
-        }
         return transfers.stream()
                 .map(transferMapper::toDto)
                 .toList();
@@ -131,7 +127,8 @@ public class TransferServiceImpl implements TransferService {
         transfer.setDestinationAccount(cuentaDestino);
         transfer.setTransactionAmount(monto);
         transfer.setTransactionDate(dto.getTransactionDate());
-        transfer.setDescription(dto.getDescription());
+        transfer.setDescription("Transferencia recibida de " + cuentaOrigen.getUser().getPerson().getFullName());
+        transfer.setDestinationAccountOwner(cuentaDestino.getUser().getPerson().getFullName());
 
         Transfer savedTransfer = transferRepository.save(transfer);
 

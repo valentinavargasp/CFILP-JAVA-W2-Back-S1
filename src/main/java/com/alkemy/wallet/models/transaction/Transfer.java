@@ -42,4 +42,7 @@ public class Transfer {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "destination_account_owner")
+    private String destinationAccountOwner;
+
 }
