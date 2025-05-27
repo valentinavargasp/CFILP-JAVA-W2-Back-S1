@@ -138,9 +138,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public List<TransferDTO> getByAccountId(int accountId) {
         List<Transfer> transfers = transferRepository.findByAccountId(accountId);
-        if (transfers.isEmpty()) {
-            throw new IllegalArgumentException("No se encontraron transferencias con ID de cuenta: " + accountId);
-        }
+      
         return transfers.stream()
                 .map(transferMapper::toDto)
                 .toList();
