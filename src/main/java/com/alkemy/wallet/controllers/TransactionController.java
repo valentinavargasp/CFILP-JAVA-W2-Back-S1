@@ -47,6 +47,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getByUserId(userId));
     }
 
+    
     @Operation(summary = "Buscar transacciones por ID de cuenta")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Transacciones encontradas"),
@@ -54,7 +55,11 @@ public class TransactionController {
     })
     @GetMapping("/account/{accountId}")
     public ResponseEntity<List<TransactionDTO>> getByAccountId(@PathVariable int accountId) {
-        return ResponseEntity.ok(transactionService.getByAccountId(accountId));
+       List<TransactionDTO> transactions= transactionService.getByAccountId(accountId);
+       if (transactions.isEmpty()) {
+           return ResponseEntity.noContent().build(); // 204 No Content
+       }
+       return ResponseEntity.ok(transactions); // 200 OK
     }
 
     @Operation(summary = "Buscar transacciones por fecha")
