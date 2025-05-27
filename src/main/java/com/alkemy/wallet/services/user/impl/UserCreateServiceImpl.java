@@ -78,7 +78,7 @@ public class UserCreateServiceImpl implements UserCreateService {
             account.setAccountType(accountType);
             account.setCurrency(Currency.ARS);
             account.setUser(savedUser);
-
+            account.setAccountName(accountType.getAccountType() + " en " + Currency.ARS); 
             accountRepository.save(account);
 
             User updatedUser = userRepository.save(savedUser);
