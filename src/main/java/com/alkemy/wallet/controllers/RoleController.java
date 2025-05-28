@@ -1,5 +1,7 @@
 package com.alkemy.wallet.controllers;
 
+import com.alkemy.wallet.dto.RoleDTO;
+import com.alkemy.wallet.mapper.RoleMapper;
 import com.alkemy.wallet.models.user.Role;
 import com.alkemy.wallet.services.user.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,23 +20,31 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    public RoleController(RoleService roleService) {
+    private final RoleMapper roleMapper;
+
+    public RoleController(RoleService roleService, RoleMapper roleMapper) {
         this.roleService = roleService;
+        this.roleMapper = roleMapper;
     }
 
     @Operation(summary = "Listar todos los roles")
     @ApiResponse(responseCode = "200", description = "Lista de roles")
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
-        return ResponseEntity.ok(roleService.getAllRoles());
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<Role> roles = roleService.getAllRoles();
+        List<RoleDTO> roleDTOs = roles.stream()
+                .map(roleMapper::toDTO)
+                .toList();
+        return ResponseEntity.ok(roleDTOs);
     }
 
     @Operation(summary = "Obtener un rol por ID")
     @ApiResponse(responseCode = "200", description = "Rol encontrado")
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable int id) {
+    public ResponseEntity<RoleDTO> getRoleById(@PathVariable int id) {
         Role role = roleService.getRoleById(id);
-        return ResponseEntity.ok(role);
+        RoleDTO roleDTO = roleMapper.toDTO(role);
+        return ResponseEntity.ok(roleDTO);
     }
 
     @Operation(summary = "Crear un nuevo rol")
@@ -61,4 +71,3 @@ public class RoleController {
         return ResponseEntity.noContent().build();
     }
 }
-
