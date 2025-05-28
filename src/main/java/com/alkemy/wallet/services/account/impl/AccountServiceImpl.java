@@ -13,6 +13,8 @@ import com.alkemy.wallet.repository.financer_product.FinancerProductRepository;
 import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.services.account.AccountService;
+import com.alkemy.wallet.utils.AliasGenerator;
+import com.alkemy.wallet.utils.CbuGenerator;
 
 import jakarta.transaction.Transactional;
 
@@ -37,6 +39,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+
+
 
     @Override
     @Transactional
@@ -125,6 +130,9 @@ public class AccountServiceImpl implements AccountService {
         account.setUser(user); // Asignar el usuario a la cuenta
         account.setAccountType(accountType); // Asignar el tipo de cuenta a la cuenta
         account.setBalance(0);
+        account.setAlias(AliasGenerator.generateRandomAlias());
+        account.setCbu(CbuGenerator.generateRandomCBU());
+        account.setAccountName(accountType.getAccountType() + " en " + account.getCurrency());
 
         // Asignar la fecha de creación si está vacía
         if (account.getCreationDate() == null) {
