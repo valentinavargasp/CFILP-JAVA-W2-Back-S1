@@ -11,6 +11,8 @@ public class RoleDTO {
 
     private int id;
     private String roleName;
+    private String description;
+    private String permissions;  
     private int userCount;
 
     public String getRoleName() {
@@ -34,6 +36,22 @@ public class RoleDTO {
     
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
     }
 
 }
