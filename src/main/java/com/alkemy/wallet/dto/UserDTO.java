@@ -26,6 +26,7 @@ public class UserDTO {
     private String phoneNumber;
     private int identityCard;
     private String dateBirth;
+    private String email;
 
      // Roles
     private List<String> roles;

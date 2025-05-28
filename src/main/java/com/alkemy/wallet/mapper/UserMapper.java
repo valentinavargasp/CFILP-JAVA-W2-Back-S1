@@ -30,6 +30,7 @@ public interface UserMapper {
     @Mapping(source = "person.phoneNumber", target = "phoneNumber")
     @Mapping(source = "person.identityCard", target = "identityCard")
     @Mapping(source = "person.dateBirth", target = "dateBirth")
+    @Mapping(source = "email", target = "email")
     @Mapping(target = "roles", expression = "java(mapRoles(user))")
     @Mapping(source = "accounts", target = "accounts")
     UserDTO toDTO(User user);
