@@ -13,4 +13,5 @@ public class TransactionDTO {
     private int accountId; 
     private String description;
     private String transactionType; // "DEPOSIT", "WITHDRAWAL", "TRANSFER"
+    private String username; 
 }
