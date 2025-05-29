@@ -118,17 +118,17 @@ public class TransferServiceImpl implements TransferService {
         transactionRepository.save(transactionOrigen);
         transactionRepository.save(transactionDestino);
 
-        accountRepository.save(cuentaOrigen);
-        accountRepository.save(cuentaDestino);
+        Account savedOriginAccount  = accountRepository.save(cuentaOrigen);
+        Account savedDestinationAccount =  accountRepository.save(cuentaDestino);
 
         // Crear y guardar transferencia
         Transfer transfer = new Transfer();
-        transfer.setAccount(cuentaOrigen);
-        transfer.setDestinationAccount(cuentaDestino);
+        transfer.setAccount(savedOriginAccount);
+        transfer.setDestinationAccount(savedDestinationAccount);
         transfer.setTransactionAmount(monto);
         transfer.setTransactionDate(dto.getTransactionDate());
         transfer.setDescription(dto.getDescription());
-        transfer.setDestinationAccountOwner(cuentaDestino.getUser().getPerson().getFullName());
+        transfer.setDestinationAccountOwner(savedDestinationAccount.getUser().getPerson().getFullName());
 
         Transfer savedTransfer = transferRepository.save(transfer);
 
