@@ -20,6 +20,8 @@ import com.alkemy.wallet.repository.user.RoleRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.repository.user.UserRoleRepository;
 import com.alkemy.wallet.services.user.UserCreateService;
+import com.alkemy.wallet.utils.AliasGenerator;
+import com.alkemy.wallet.utils.CbuGenerator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,18 +68,24 @@ public class UserCreateServiceImpl implements UserCreateService {
             Role role = roleRepository.findById(5).orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
             userRoleRepository.save(new UserRole(savedUser, role));
 
-            //SE LE ASIGNA UNA CUENTA A LA PERSONA
+            // SE LE ASIGNA UNA CUENTA A LA PERSONA
 
             AccountType accountType = accountTypeRepository.findById(1)
                     .orElseThrow(() -> new IllegalArgumentException("Tipo de cuenta no encontrado"));
             // Crear una cuenta asociada al usuario recién creado
             Account account = new Account();
-            account.setCbu("CBU_" + savedUser.getId()); // Generar un CBU único
-            account.setAlias("alias_" + savedUser.getUsername().toLowerCase());
+            account.setAlias(AliasGenerator.generateRandomAlias());
+            account.setCbu(CbuGenerator.generateRandomCBU());
             account.setBalance(0.0);
             account.setAccountType(accountType);
             account.setCurrency(Currency.ARS);
             account.setUser(savedUser);
+            account.setAccountName(accountType.getAccountType() + " en " + Currency.ARS);
+
+            // Asignar la fecha de creación si está vacía
+            if (account.getCreationDate() == null) {
+                account.setCreationDate(java.time.LocalDateTime.now());
+            }
 
             accountRepository.save(account);
 

@@ -13,6 +13,8 @@ import com.alkemy.wallet.repository.financer_product.FinancerProductRepository;
 import com.alkemy.wallet.repository.transaction.TransactionRepository;
 import com.alkemy.wallet.repository.user.UserRepository;
 import com.alkemy.wallet.services.account.AccountService;
+import com.alkemy.wallet.utils.AliasGenerator;
+import com.alkemy.wallet.utils.CbuGenerator;
 
 import jakarta.transaction.Transactional;
 
@@ -37,6 +39,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+
+
 
     @Override
     @Transactional
@@ -74,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
                 throw new RuntimeException("No se encontraron cuentas para el usuario con ID " + userId);
             }
             List<AccountDTO> accountDTOs = accountMapper.toDTOList(accounts);
-       
+
             return accountDTOs;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -90,13 +95,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAllAccounts() {
+    public List<AccountDTO> getAllAccounts() {
         List<Account> accounts = accountRepository.findAll();
         if (accounts.isEmpty()) {
             throw new RuntimeException("No se encontraron cuentas");
         }
-        return accounts;
-
+        List<AccountDTO> dtos = accountMapper.toDTOList(accounts);
+        // Setear el status calculado en cada DTO
+        for (int i = 0; i < accounts.size(); i++) {
+            dtos.get(i).setStatus(getAccountStatus(accounts.get(i)));
+        }
+        return dtos;
     }
 
     @Override
@@ -107,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID " + userId));
 
-        //Obtenemos el nombre del tipo de cuenta desde el DTO
+        // Obtenemos el nombre del tipo de cuenta desde el DTO
         String accountTypeName = accountDTO.getAccountType();
 
         // Verificar si el tipo de cuenta existe por el nombre
@@ -115,14 +124,22 @@ public class AccountServiceImpl implements AccountService {
         if (accountType == null) {
             throw new RuntimeException("Tipo de cuenta no encontrada con el nombre " + accountTypeName);
         }
-        
-        //Mapea el DTO a la entidad
+
+        // Mapea el DTO a la entidad
         Account account = accountMapper.toEntity(accountDTO);
         account.setUser(user); // Asignar el usuario a la cuenta
         account.setAccountType(accountType); // Asignar el tipo de cuenta a la cuenta
         account.setBalance(0);
-        
-        Account createdAccount =  accountRepository.save(account);// cuenta desde DB con ID 
+        account.setAlias(AliasGenerator.generateRandomAlias());
+        account.setCbu(CbuGenerator.generateRandomCBU());
+        account.setAccountName(accountType.getAccountType() + " en " + account.getCurrency());
+
+        // Asignar la fecha de creación si está vacía
+        if (account.getCreationDate() == null) {
+            account.setCreationDate(java.time.LocalDateTime.now());
+        }
+
+        Account createdAccount = accountRepository.save(account);// cuenta desde DB con ID
         return accountMapper.toDTO(createdAccount); // Convertir la cuenta a DTO y devolverla
     }
 
@@ -144,4 +161,11 @@ public class AccountServiceImpl implements AccountService {
         return products;
     }
 
+    @Override
+    public String getAccountStatus(Account account) {
+        java.time.LocalDateTime haceUnMes = java.time.LocalDateTime.now().minusMonths(1);
+        boolean tieneMovimientos = transactionRepository.existsByAccountIdAndTransactionDateAfter(account.getId(),
+                haceUnMes);
+        return tieneMovimientos ? "active" : "inactive";
+    }
 }

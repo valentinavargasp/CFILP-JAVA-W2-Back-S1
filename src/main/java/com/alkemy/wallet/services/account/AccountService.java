@@ -24,7 +24,9 @@ public interface AccountService {
 
     public List<Transaction> getAccountTransactions(int accountId);
 
-    public List<Account> getAllAccounts();
+    public List<AccountDTO> getAllAccounts();
 
     public List<FinancerProduct> getAccountFinancerProducts(int accountId);
+
+    public String getAccountStatus(Account account);
 }

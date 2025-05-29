@@ -36,7 +36,7 @@ public class AccountController {
     @Operation(summary = "Listar todas las cuentas")
     @ApiResponse(responseCode = "200", description = "Lista de cuentas")
     @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts() {
+    public ResponseEntity<List<AccountDTO>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 

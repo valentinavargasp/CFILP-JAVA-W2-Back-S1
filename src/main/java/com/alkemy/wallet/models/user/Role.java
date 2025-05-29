@@ -32,6 +32,12 @@ public class Role {
     @Column(name = "role_name")
     private String roleName;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "permissions")
+    private String permissions; // Ejemplo: "READ,WRITE,DELETE"
+
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     private List<UserRole> roles;

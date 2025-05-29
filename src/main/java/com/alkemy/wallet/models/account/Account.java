@@ -1,5 +1,7 @@
 package com.alkemy.wallet.models.account;
 
+import java.time.LocalDateTime;
+
 import com.alkemy.wallet.models.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -27,7 +29,7 @@ public class Account {
     private int id;
 
     @Column(name = "account_name")
-    private String accountName; 
+    private String accountName;
 
     @Column(name = "cbu")
     private String cbu;
@@ -37,6 +39,12 @@ public class Account {
 
     @Column(name = "alias")
     private String alias;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
@@ -56,19 +64,23 @@ public class Account {
     public Account() {
     }
 
-    public Account(User user, String cbu, double balance, String alias, AccountType accountType, Currency currency) {
+    public Account(User user, String cbu, double balance, String alias, AccountType accountType, Currency currency,
+            String status, LocalDateTime creationDate) {
         this.user = user;
         this.cbu = cbu;
         this.balance = balance;
         this.alias = alias;
         this.accountType = accountType;
         this.currency = currency;
+        this.status = status;
+        this.creationDate = creationDate;
     }
 
     @Override
     public String toString() {
         return "Account [id=" + id + ", cbu=" + cbu + ", balance=" + balance + ", alias=" + alias
-                + ", accountType=" + accountType + ", currency=" + currency + "]";
+                + ", accountType=" + accountType + ", currency=" + currency + ", status=" + status
+                + ", creationDate=" + creationDate + "]";
     }
 
 }

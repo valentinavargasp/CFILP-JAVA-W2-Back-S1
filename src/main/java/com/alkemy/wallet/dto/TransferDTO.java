@@ -14,5 +14,6 @@ public class TransferDTO {
     private String description;
     private String recipientCBU;
     private String recipientAlias;
+    private String destinationAccountOwner;
 
 }
