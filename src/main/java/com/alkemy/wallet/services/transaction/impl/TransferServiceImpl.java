@@ -128,6 +128,7 @@ public class TransferServiceImpl implements TransferService {
         transfer.setTransactionAmount(monto);
         transfer.setTransactionDate(dto.getTransactionDate());
         transfer.setDescription(dto.getDescription());
+        transfer.setDestinationAccountOwner(cuentaDestino.getUser().getPerson().getFullName());
 
         Transfer savedTransfer = transferRepository.save(transfer);
 
